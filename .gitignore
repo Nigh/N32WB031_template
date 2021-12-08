@@ -1,0 +1,8 @@
+bin
+Listings
+Objects
+EventRecorderStub.scvd
+JLinkLog*
+JLinkSettings*
+*.uvguix*
+*.uvoptx

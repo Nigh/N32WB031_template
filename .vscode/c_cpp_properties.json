@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+				"G:\\_business\\_n32wb_SDK\\N32WB03x_SDK_V1.0.0\\middlewares\\Nationstech\\ble_library\\**",
+				"G:\\_business\\_n32wb_SDK\\N32WB03x_SDK_V1.0.0\\firmware\\**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\TDM-GCC-64\\bin\\gcc.exe",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
