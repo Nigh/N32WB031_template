@@ -1,46 +1,16 @@
-/*****************************************************************************
- * Copyright (c) 2019, Nations Technologies Inc.
- *
- * All rights reserved.
- * ****************************************************************************
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * - Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the disclaimer below.
- *
- * Nations' name may not be used to endorse or promote products derived from
- * this software without specific prior written permission.
- *
- * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY NATIONS "AS IS" AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
- * DISCLAIMED. IN NO EVENT SHALL NATIONS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
- * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * ****************************************************************************/
 
 /**
- * @file rdtss_16bit_task.c
- * @author Nations Firmware Team
+ * @file custom_srv_task.c
+ * @author
  * @version v1.0.0
- *
- * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
-
 
 /* Includes ------------------------------------------------------------------*/
 #include "rwip_config.h"              // SW configuration
 
-#if (BLE_RDTSS_16BIT_SERVER)
-#include "rdtss_16bit_task.h"
-#include "rdtss_16bit.h"
-#include "rdts_common.h"
+#include "custom_srv_task.h"
+#include "custom_srv.h"
+#include "custom_srv_common.h"
 #include "attm.h"
 #include "ke_task.h"
 #include "gapc.h"
@@ -50,7 +20,7 @@
 #include "prf_utils.h"
 #include "ke_mem.h"
 
-#include "app_rdtss_16bit.h"
+#include "app_custom_srv.h"
 #include "co_utils.h"
 /* Private functions ---------------------------------------------------------*/
 
@@ -61,19 +31,19 @@
  * @param[in] data     Pointer to value data.
  * @return 0 on success.
  */
-static int rdtss_16bit_att_set_value(uint8_t att_idx, uint16_t length, const uint8_t* data)
+static int custom_srv_att_set_value(uint8_t att_idx, uint16_t length, const uint8_t* data)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 	// Check value in already present in service
-	struct rdtss_16bit_val_elmt* val = (struct rdtss_16bit_val_elmt*) co_list_pick(&(rdtss_16bit_env->values));
+	struct custom_srv_val_elmt* val = (struct custom_srv_val_elmt*) co_list_pick(&(custom_srv_env->values));
 	// loop until value found
 	while (val != NULL) {
 		// value is present in service
 		if (val->att_idx == att_idx) {
 			// Value present but size changed, free old value
 			if (length != val->length) {
-				//co_list_extract(&rdtss_16bit_env->values, &val->hdr, 0);
-				co_list_extract(&rdtss_16bit_env->values, &val->hdr);        //lxm
+				//co_list_extract(&custom_srv_env->values, &val->hdr, 0);
+				co_list_extract(&custom_srv_env->values, &val->hdr);        //lxm
 
 				ke_free(val);
 				val = NULL;
@@ -81,14 +51,14 @@ static int rdtss_16bit_att_set_value(uint8_t att_idx, uint16_t length, const uin
 			break;
 		}
 
-		val = (struct rdtss_16bit_val_elmt*)val->hdr.next;
+		val = (struct custom_srv_val_elmt*)val->hdr.next;
 	}
 
 	if (val == NULL) {
 		// allocate value data
-		val = (struct rdtss_16bit_val_elmt*) ke_malloc(sizeof(struct rdtss_16bit_val_elmt) + length, KE_MEM_ATT_DB);
+		val = (struct custom_srv_val_elmt*) ke_malloc(sizeof(struct custom_srv_val_elmt) + length, KE_MEM_ATT_DB);
 		// insert value into the list
-		co_list_push_back(&rdtss_16bit_env->values, &val->hdr);
+		co_list_push_back(&custom_srv_env->values, &val->hdr);
 	}
 	val->att_idx = att_idx;
 	val->length = length;
@@ -105,11 +75,11 @@ static int rdtss_16bit_att_set_value(uint8_t att_idx, uint16_t length, const uin
  * @param[out] data     Pointer to variable that receive pointer characteristic value.
  * @return 0 on success, ATT_ERR_ATTRIBUTE_NOT_FOUND if there is no value for such attribyte.
  */
-static int rdtss_16bit_att_get_value(uint8_t att_idx, uint16_t* length, const uint8_t** data)
+static int custom_srv_att_get_value(uint8_t att_idx, uint16_t* length, const uint8_t** data)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 	// Check value in already present in service
-	struct rdtss_16bit_val_elmt* val = (struct rdtss_16bit_val_elmt*) co_list_pick(&rdtss_16bit_env->values);
+	struct custom_srv_val_elmt* val = (struct custom_srv_val_elmt*) co_list_pick(&custom_srv_env->values);
 	ASSERT_ERR(data);
 	ASSERT_ERR(length);
 
@@ -122,7 +92,7 @@ static int rdtss_16bit_att_get_value(uint8_t att_idx, uint16_t* length, const ui
 			break;
 		}
 
-		val = (struct rdtss_16bit_val_elmt*)val->hdr.next;
+		val = (struct custom_srv_val_elmt*)val->hdr.next;
 	}
 
 	if (val == NULL) {
@@ -137,7 +107,7 @@ static int rdtss_16bit_att_get_value(uint8_t att_idx, uint16_t* length, const ui
  * @param[in]  att_db     Custom service attribute definition table.
  * @param[in]  max_nb_att Number of elements in att_db.
  */
-void rdtss_16bit_init_ccc_values(const struct attm_desc* att_db, int max_nb_att)
+void custom_srv_init_ccc_values(const struct attm_desc* att_db, int max_nb_att)
 {
 	// Default values 0 means no notification
 	uint8_t ccc_values[BLE_CONNECTION_MAX] = {0};
@@ -145,11 +115,11 @@ void rdtss_16bit_init_ccc_values(const struct attm_desc* att_db, int max_nb_att)
 
 	// Start form 1, skip service description
 	for (i = 1; i < max_nb_att; i++) {
-		if( PERM_GET(rdtss_16bit_att_db[i].perm, UUID_LEN) == PERM_UUID_16 &&
-		        (rdtss_16bit_att_db[i].uuid) == ATT_DESC_CLIENT_CHAR_CFG
+		if( PERM_GET(custom_srv_att_db[i].perm, UUID_LEN) == PERM_UUID_16 &&
+		        (custom_srv_att_db[i].uuid) == ATT_DESC_CLIENT_CHAR_CFG
 		  ) {
 			// Set default values for all possible connections
-			rdtss_16bit_att_set_value(i, sizeof(ccc_values), ccc_values);
+			custom_srv_att_set_value(i, sizeof(ccc_values), ccc_values);
 		}
 	}
 }
@@ -160,20 +130,20 @@ void rdtss_16bit_init_ccc_values(const struct attm_desc* att_db, int max_nb_att)
  * @param[in] att_idx  CCC attribute index.
  * @param[in] cc       Value to store.
  */
-void rdtss_16bit_set_ccc_value(uint8_t conidx, uint8_t att_idx, uint16_t ccc)
+void custom_srv_set_ccc_value(uint8_t conidx, uint8_t att_idx, uint16_t ccc)
 {
 	uint16_t length;
 	const uint8_t* value;
 	uint8_t new_value[BLE_CONNECTION_MAX];
 	ASSERT_ERR(conidx < BLE_CONNECTION_MAX);
 
-	rdtss_16bit_att_get_value(att_idx, &length, &value);
+	custom_srv_att_get_value(att_idx, &length, &value);
 	ASSERT_ERR(length);
 	ASSERT_ERR(value);
 	memcpy(new_value, value, length);
 	// For now there are only two valid values for ccc, store just one byte other is 0 anyway
 	new_value[conidx] = (uint8_t)ccc;
-	rdtss_16bit_att_set_value(att_idx, length, new_value);
+	custom_srv_att_set_value(att_idx, length, new_value);
 }
 
 /**
@@ -182,7 +152,7 @@ void rdtss_16bit_set_ccc_value(uint8_t conidx, uint8_t att_idx, uint16_t ccc)
  * @param[in]  att_idx  Custom attribute index.
  * @return Value of CCC.
  */
-static uint16_t rdtss_16bit_get_ccc_value(uint8_t conidx, uint8_t att_idx)
+static uint16_t custom_srv_get_ccc_value(uint8_t conidx, uint8_t att_idx)
 {
 	uint16_t length;
 	const uint8_t* value;
@@ -190,7 +160,7 @@ static uint16_t rdtss_16bit_get_ccc_value(uint8_t conidx, uint8_t att_idx)
 
 	ASSERT_ERR(conidx < BLE_CONNECTION_MAX);
 
-	rdtss_16bit_att_get_value(att_idx, &length, &value);
+	custom_srv_att_get_value(att_idx, &length, &value);
 	ASSERT_ERR(length);
 	ASSERT_ERR(value);
 
@@ -199,23 +169,23 @@ static uint16_t rdtss_16bit_get_ccc_value(uint8_t conidx, uint8_t att_idx)
 	return ccc_value;
 }
 
-static void rdtss_16bit_exe_operation(void)
+static void custom_srv_exe_operation(void)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
-	ASSERT_ERR(rdtss_16bit_env->operation != NULL);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
+	ASSERT_ERR(custom_srv_env->operation != NULL);
 	bool notification_sent = false;
 	const uint8_t* ccc_values;
 	uint16_t length;
 
-	struct rdtss_16bit_val_ntf_ind_req* app_req = (struct rdtss_16bit_val_ntf_ind_req*)ke_msg2param(rdtss_16bit_env->operation);
+	struct custom_srv_val_ntf_ind_req* app_req = (struct custom_srv_val_ntf_ind_req*)ke_msg2param(custom_srv_env->operation);
 
-	rdtss_16bit_att_get_value(rdtss_16bit_env->ccc_idx, &length, &ccc_values);
+	custom_srv_att_get_value(custom_srv_env->ccc_idx, &length, &ccc_values);
 	ASSERT_ERR(length == BLE_CONNECTION_MAX);
 
 	// loop on all connections
-	while (!notification_sent && rdtss_16bit_env->cursor < BLE_CONNECTION_MAX) {
+	while (!notification_sent && custom_srv_env->cursor < BLE_CONNECTION_MAX) {
 		struct gattc_send_evt_cmd* req;
-		uint8_t cursor = rdtss_16bit_env->cursor++;
+		uint8_t cursor = custom_srv_env->cursor++;
 
 		// Check if notification or indication is set for connection
 		if ((app_req->notification && ((ccc_values[cursor] & PRF_CLI_START_NTF) == 0)) ||
@@ -227,11 +197,11 @@ static void rdtss_16bit_exe_operation(void)
 
 		// Allocate the GATT notification message
 		req = KE_MSG_ALLOC_DYN(GATTC_SEND_EVT_CMD,
-		                       KE_BUILD_ID(TASK_GATTC, cursor), rdtss_16bit_env->operation->dest_id, gattc_send_evt_cmd, app_req->length);
+		                       KE_BUILD_ID(TASK_GATTC, cursor), custom_srv_env->operation->dest_id, gattc_send_evt_cmd, app_req->length);
 
 		// Fill in the parameter structure
 		req->operation = app_req->notification ? GATTC_NOTIFY : GATTC_INDICATE;
-		req->handle = rdtss_16bit_env->shdl + app_req->handle;
+		req->handle = custom_srv_env->shdl + app_req->handle;
 		req->length = app_req->length;
 		memcpy(req->value, app_req->value, app_req->length);
 
@@ -243,24 +213,24 @@ static void rdtss_16bit_exe_operation(void)
 	if (!notification_sent) {
 		if (app_req->notification) {
 			// Inform the application that the notification PDU has been sent over the air.
-			struct rdtss_16bit_val_ntf_cfm* cfm = KE_MSG_ALLOC(RDTSS_16BIT_VAL_NTF_CFM,
-			                                      rdtss_16bit_env->operation->src_id, rdtss_16bit_env->operation->dest_id,
-			                                      rdtss_16bit_val_ntf_cfm);
+			struct custom_srv_val_ntf_cfm* cfm = KE_MSG_ALLOC(RDTSS_16BIT_VAL_NTF_CFM,
+			                                     custom_srv_env->operation->src_id, custom_srv_env->operation->dest_id,
+			                                     custom_srv_val_ntf_cfm);
 			cfm->handle = app_req->handle;
 			cfm->status = GAP_ERR_NO_ERROR;
 			ke_msg_send(cfm);
 		} else {
 			// Inform the application that the indication has been confirmed by the peer device.
-			struct rdtss_16bit_val_ind_cfm* cfm = KE_MSG_ALLOC(RDTSS_16BIT_VAL_IND_CFM,
-			                                      rdtss_16bit_env->operation->src_id, rdtss_16bit_env->operation->dest_id,
-			                                      rdtss_16bit_val_ind_cfm);
+			struct custom_srv_val_ind_cfm* cfm = KE_MSG_ALLOC(RDTSS_16BIT_VAL_IND_CFM,
+			                                     custom_srv_env->operation->src_id, custom_srv_env->operation->dest_id,
+			                                     custom_srv_val_ind_cfm);
 			cfm->handle = app_req->handle;
 			cfm->status = GAP_ERR_NO_ERROR;
 			ke_msg_send(cfm);
 		}
-		ke_free(rdtss_16bit_env->operation);
-		rdtss_16bit_env->operation = NULL;
-		ke_state_set(prf_src_task_get(&(rdtss_16bit_env->prf_env), 0), RDTSS_16BIT_IDLE);
+		ke_free(custom_srv_env->operation);
+		custom_srv_env->operation = NULL;
+		ke_state_set(prf_src_task_get(&(custom_srv_env->prf_env), 0), RDTSS_16BIT_IDLE);
 	}
 }
 
@@ -284,10 +254,10 @@ static int gattc_cmp_evt_handler(ke_msg_id_t const msgid,
                                  ke_task_id_t const dest_id,
                                  ke_task_id_t const src_id)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 
 	if (param->operation == GATTC_NOTIFY || param->operation == GATTC_INDICATE) {
-		rdtss_16bit_exe_operation();
+		custom_srv_exe_operation();
 	}
 
 	return (KE_MSG_CONSUMED);
@@ -301,14 +271,14 @@ static int gattc_cmp_evt_handler(ke_msg_id_t const msgid,
  * @param[in] src_id ID of the sending task instance.
  * @return If the message was consumed or not.
  */
-static int rdtss_16bit_val_set_req_handler(ke_msg_id_t const msgid,
-        struct rdtss_16bit_val_set_req const* param,
+static int custom_srv_val_set_req_handler(ke_msg_id_t const msgid,
+        struct custom_srv_val_set_req const* param,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 	// Update value in DB
-	attm_att_set_value(rdtss_16bit_env->shdl + param->handle, param->length, 0, (uint8_t*)&param->value);
+	attm_att_set_value(custom_srv_env->shdl + param->handle, param->length, 0, (uint8_t*)&param->value);
 
 	return (KE_MSG_CONSUMED);
 }
@@ -321,14 +291,14 @@ static int rdtss_16bit_val_set_req_handler(ke_msg_id_t const msgid,
  * @param[in] src_id ID of the sending task instance.
  * @return If the message was consumed or not.
  */
-static int rdtss_16bit_val_ntf_req_handler(ke_msg_id_t const msgid,
-        struct rdtss_16bit_val_ntf_ind_req const* param,
+static int custom_srv_val_ntf_req_handler(ke_msg_id_t const msgid,
+        struct custom_srv_val_ntf_ind_req const* param,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 	uint16_t ccc_hdl;
-	uint16_t handle = rdtss_16bit_env->shdl + param->handle;
+	uint16_t handle = custom_srv_env->shdl + param->handle;
 	uint8_t ccc_idx;
 	uint8_t status;
 
@@ -343,16 +313,16 @@ static int rdtss_16bit_val_ntf_req_handler(ke_msg_id_t const msgid,
 	ASSERT_ERR(ccc_hdl);
 
 	// Convert handle to index
-	status = rdtss_16bit_get_att_idx(ccc_hdl, &ccc_idx);
+	status = custom_srv_get_att_idx(ccc_hdl, &ccc_idx);
 	ASSERT_ERR(status == ATT_ERR_NO_ERROR);
 
 	ke_state_set(dest_id, RDTSS_16BIT_BUSY);
-	rdtss_16bit_env->operation = ke_param2msg(param);
-	rdtss_16bit_env->cursor = 0;
-	rdtss_16bit_env->ccc_idx = ccc_idx;
+	custom_srv_env->operation = ke_param2msg(param);
+	custom_srv_env->cursor = 0;
+	custom_srv_env->ccc_idx = ccc_idx;
 
 	// Trigger notification
-	rdtss_16bit_exe_operation();
+	custom_srv_exe_operation();
 
 	return KE_MSG_NO_FREE;
 }
@@ -365,14 +335,14 @@ static int rdtss_16bit_val_ntf_req_handler(ke_msg_id_t const msgid,
  * @param[in] src_id ID of the sending task instance.
  * @return If the message was consumed or not.
  */
-static int rdtss_16bit_val_ind_req_handler(ke_msg_id_t const msgid,
-        struct rdtss_16bit_val_ind_req const* param,
+static int custom_srv_val_ind_req_handler(ke_msg_id_t const msgid,
+        struct custom_srv_val_ind_req const* param,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 	uint16_t ccc_hdl;
-	uint16_t handle = rdtss_16bit_env->shdl + param->handle;
+	uint16_t handle = custom_srv_env->shdl + param->handle;
 	uint8_t ccc_idx;
 	uint8_t status;
 
@@ -386,16 +356,16 @@ static int rdtss_16bit_val_ind_req_handler(ke_msg_id_t const msgid,
 	ASSERT_ERR(ccc_hdl);
 
 	// Convert handle to index
-	status = rdtss_16bit_get_att_idx(ccc_hdl, &ccc_idx);
+	status = custom_srv_get_att_idx(ccc_hdl, &ccc_idx);
 	ASSERT_ERR(status == ATT_ERR_NO_ERROR);
 
 	ke_state_set(dest_id, RDTSS_16BIT_BUSY);
-	rdtss_16bit_env->operation = ke_param2msg(param);
-	rdtss_16bit_env->cursor = 0;
-	rdtss_16bit_env->ccc_idx = ccc_idx;
+	custom_srv_env->operation = ke_param2msg(param);
+	custom_srv_env->cursor = 0;
+	custom_srv_env->ccc_idx = ccc_idx;
 
 	// Trigger indication
-	rdtss_16bit_exe_operation();
+	custom_srv_exe_operation();
 
 	return KE_MSG_NO_FREE;
 }
@@ -408,8 +378,8 @@ static int rdtss_16bit_val_ind_req_handler(ke_msg_id_t const msgid,
  * @param[in] src_id ID of the sending task instance (probably unused).
  * @return If the message shall be consumed or not.
  */
-static int rdtss_16bit_att_info_rsp_handler(ke_msg_id_t const msgid,
-        struct rdtss_16bit_att_info_rsp const* param,
+static int custom_srv_att_info_rsp_handler(ke_msg_id_t const msgid,
+        struct custom_srv_att_info_rsp const* param,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
@@ -417,12 +387,12 @@ static int rdtss_16bit_att_info_rsp_handler(ke_msg_id_t const msgid,
 
 	if (state == RDTSS_16BIT_IDLE) {
 		// Extract the service start handle.
-		struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+		struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 		// Allocate the attribute information confirmation message.
 		struct gattc_att_info_cfm* cfm;
 		cfm = KE_MSG_ALLOC(GATTC_ATT_INFO_CFM, TASK_GATTC, dest_id, gattc_att_info_cfm);
 		// Fill the message.
-		cfm->handle = rdtss_16bit_env->shdl + param->att_idx;
+		cfm->handle = custom_srv_env->shdl + param->att_idx;
 		cfm->length = param->length;
 		cfm->status = param->status;
 		// Send the confirmation message to GATTC.
@@ -446,30 +416,30 @@ static int gattc_read_req_ind_handler(ke_msg_id_t const msgid, struct gattc_read
 	ke_state_t state = ke_state_get(dest_id);
 
 	if(state == RDTSS_16BIT_IDLE) {
-		struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+		struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 		struct gattc_read_cfm* cfm;
 		uint8_t att_idx = 0;
 		uint8_t conidx = KE_IDX_GET(src_id);
 		// retrieve handle information
 
-		uint8_t status = rdtss_16bit_get_att_idx(param->handle, &att_idx);
+		uint8_t status = custom_srv_get_att_idx(param->handle, &att_idx);
 
 		uint16_t length = 0;
 		uint16_t ccc_val = 0;
 
 		// If the attribute has been found, status is GAP_ERR_NO_ERROR
 		if (status == GAP_ERR_NO_ERROR) {
-			if( PERM_GET(rdtss_16bit_att_db[att_idx].perm, UUID_LEN) == PERM_UUID_16 &&
-			        (rdtss_16bit_att_db[att_idx].uuid) == ATT_DESC_CLIENT_CHAR_CFG
+			if( PERM_GET(custom_srv_att_db[att_idx].perm, UUID_LEN) == PERM_UUID_16 &&
+			        (custom_srv_att_db[att_idx].uuid) == ATT_DESC_CLIENT_CHAR_CFG
 			  ) {
-				ccc_val = rdtss_16bit_get_ccc_value(conidx, att_idx);
+				ccc_val = custom_srv_get_ccc_value(conidx, att_idx);
 				length = 2;
 			} else {
 				// Request value from application
-				struct rdtss_16bit_value_req_ind* req_ind = KE_MSG_ALLOC(RDTSS_16BIT_VALUE_REQ_IND,
-				        prf_dst_task_get(&(rdtss_16bit_env->prf_env), KE_IDX_GET(src_id)),
+				struct custom_srv_value_req_ind* req_ind = KE_MSG_ALLOC(RDTSS_16BIT_VALUE_REQ_IND,
+				        prf_dst_task_get(&(custom_srv_env->prf_env), KE_IDX_GET(src_id)),
 				        dest_id,
-				        rdtss_16bit_value_req_ind);
+				        custom_srv_value_req_ind);
 
 				req_ind->conidx  = KE_IDX_GET(src_id);
 				req_ind->att_idx = att_idx;
@@ -520,12 +490,12 @@ static int gattc_read_req_ind_handler(ke_msg_id_t const msgid, struct gattc_read
 static int gattc_write_req_ind_handler(ke_msg_id_t const msgid, const struct gattc_write_req_ind* param,
                                        ke_task_id_t const dest_id, ke_task_id_t const src_id)
 {
-	struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 	struct gattc_write_cfm* cfm;
 	uint8_t att_idx = 0;
 	uint8_t conidx = KE_IDX_GET(src_id);
 	// retrieve handle information
-	uint8_t status = rdtss_16bit_get_att_idx(param->handle, &att_idx);
+	uint8_t status = custom_srv_get_att_idx(param->handle, &att_idx);
 
 	uint16_t perm;
 
@@ -533,8 +503,8 @@ static int gattc_write_req_ind_handler(ke_msg_id_t const msgid, const struct gat
 
 	// If the attribute has been found, status is ATT_ERR_NO_ERROR
 	if (status == ATT_ERR_NO_ERROR) {
-		if( PERM_GET(rdtss_16bit_att_db[att_idx].perm, UUID_LEN) == PERM_UUID_16 &&
-		        (rdtss_16bit_att_db[att_idx].uuid) == ATT_DESC_CLIENT_CHAR_CFG
+		if( PERM_GET(custom_srv_att_db[att_idx].perm, UUID_LEN) == PERM_UUID_16 &&
+		        (custom_srv_att_db[att_idx].uuid) == ATT_DESC_CLIENT_CHAR_CFG
 		  ) {
 			struct attm_elmt elem = {0};
 
@@ -548,16 +518,16 @@ static int gattc_write_req_ind_handler(ke_msg_id_t const msgid, const struct gat
 			status = check_client_char_cfg(PERM_IS_SET(perm, NTF, ENABLE), param);
 
 			if (status == ATT_ERR_NO_ERROR) {
-				rdtss_16bit_set_ccc_value(conidx, att_idx, *(uint16_t*)param->value);
+				custom_srv_set_ccc_value(conidx, att_idx, *(uint16_t*)param->value);
 			}
 		}
 
 
 		if (status == ATT_ERR_NO_ERROR) {
 			// Inform APP
-			struct rdtss_16bit_val_write_ind* req_id = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VAL_WRITE_IND,
-			        prf_dst_task_get(&(rdtss_16bit_env->prf_env), KE_IDX_GET(src_id)),
-			        dest_id, rdtss_16bit_val_write_ind,
+			struct custom_srv_val_write_ind* req_id = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VAL_WRITE_IND,
+			        prf_dst_task_get(&(custom_srv_env->prf_env), KE_IDX_GET(src_id)),
+			        dest_id, custom_srv_val_write_ind,
 			        param->length);
 			memcpy(req_id->value, param->value, param->length);
 			req_id->conidx = conidx;
@@ -594,17 +564,17 @@ static int gattc_att_info_req_ind_handler(ke_msg_id_t const msgid,
 
 	if (state == RDTSS_16BIT_IDLE) {
 		// Extract the service start handle.
-		struct rdtss_16bit_env_tag* rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+		struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 		// Allocate the attribute information request message to be processed by
 		// the application.
-		struct rdtss_16bit_att_info_req* req = KE_MSG_ALLOC(RDTSS_16BIT_ATT_INFO_REQ,
-		                                       TASK_APP,
-		                                       dest_id,
-		                                       rdtss_16bit_att_info_req);
+		struct custom_srv_att_info_req* req = KE_MSG_ALLOC(RDTSS_16BIT_ATT_INFO_REQ,
+		                                      TASK_APP,
+		                                      dest_id,
+		                                      custom_srv_att_info_req);
 		// Fill the message.
 		req->conidx  = KE_IDX_GET(src_id);
 		ASSERT_ERR((req->conidx) < BLE_CONNECTION_MAX);
-		req->att_idx = param->handle - rdtss_16bit_env->shdl;
+		req->att_idx = param->handle - custom_srv_env->shdl;
 		// Send the message to the application.
 		ke_msg_send(req);
 	}
@@ -620,8 +590,8 @@ static int gattc_att_info_req_ind_handler(ke_msg_id_t const msgid,
  * @param[in] src_id ID of the sending task instance (probably unused).
  * @return If the message shall be consumed or not.
  */
-static int rdtss_16bit_value_req_rsp_handler(ke_msg_id_t const msgid,
-        struct rdtss_16bit_value_req_rsp* param,
+static int custom_srv_value_req_rsp_handler(ke_msg_id_t const msgid,
+        struct custom_srv_value_req_rsp* param,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
@@ -637,7 +607,7 @@ static int rdtss_16bit_value_req_rsp_handler(ke_msg_id_t const msgid,
 			                             param->length);
 
 			// Fill parameters
-			cfm->handle = rdtss_16bit_get_att_handle(param->att_idx);
+			cfm->handle = custom_srv_get_att_handle(param->att_idx);
 
 			cfm->status = ATT_ERR_NO_ERROR;
 			cfm->length = param->length;
@@ -653,7 +623,7 @@ static int rdtss_16bit_value_req_rsp_handler(ke_msg_id_t const msgid,
 			                             gattc_read_cfm);
 
 			// Fill parameters
-			cfm->handle = rdtss_16bit_get_att_handle(param->att_idx);
+			cfm->handle = custom_srv_get_att_handle(param->att_idx);
 			cfm->status = ATT_ERR_APP_ERROR;
 
 			// Send message to GATTC
@@ -669,28 +639,27 @@ static int rdtss_16bit_value_req_rsp_handler(ke_msg_id_t const msgid,
 /* Public variables ---------------------------------------------------------*/
 
 /// Default State handlers definition
-KE_MSG_HANDLER_TAB(rdtss_16bit)
+KE_MSG_HANDLER_TAB(custom_srv)
 {
 	{GATTC_READ_REQ_IND,                 (ke_msg_func_t)gattc_read_req_ind_handler},
 	{GATTC_WRITE_REQ_IND,                (ke_msg_func_t)gattc_write_req_ind_handler},
 	{GATTC_ATT_INFO_REQ_IND,             (ke_msg_func_t)gattc_att_info_req_ind_handler},
 	{GATTC_CMP_EVT,                      (ke_msg_func_t)gattc_cmp_evt_handler},
-	{RDTSS_16BIT_VAL_NTF_REQ,            (ke_msg_func_t)rdtss_16bit_val_ntf_req_handler},
-	{RDTSS_16BIT_VAL_SET_REQ,            (ke_msg_func_t)rdtss_16bit_val_set_req_handler},
-	{RDTSS_16BIT_VAL_IND_REQ,            (ke_msg_func_t)rdtss_16bit_val_ind_req_handler},
-	{RDTSS_16BIT_ATT_INFO_RSP,           (ke_msg_func_t)rdtss_16bit_att_info_rsp_handler},
-	{RDTSS_16BIT_VALUE_REQ_RSP,          (ke_msg_func_t)rdtss_16bit_value_req_rsp_handler},
+	{RDTSS_16BIT_VAL_NTF_REQ,            (ke_msg_func_t)custom_srv_val_ntf_req_handler},
+	{RDTSS_16BIT_VAL_SET_REQ,            (ke_msg_func_t)custom_srv_val_set_req_handler},
+	{RDTSS_16BIT_VAL_IND_REQ,            (ke_msg_func_t)custom_srv_val_ind_req_handler},
+	{RDTSS_16BIT_ATT_INFO_RSP,           (ke_msg_func_t)custom_srv_att_info_rsp_handler},
+	{RDTSS_16BIT_VALUE_REQ_RSP,          (ke_msg_func_t)custom_srv_value_req_rsp_handler},
 };
 
-void rdtss_16bit_task_init(struct ke_task_desc* p_task_desc)
+void custom_srv_task_init(struct ke_task_desc* p_task_desc)
 {
 	// Get the address of the environment
-	struct rdtss_16bit_env_tag* p_rdtss_16bit_env = PRF_ENV_GET(RDTSS_16BIT, rdtss_16bit);
+	struct custom_srv_env_tag* p_custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 
-	p_task_desc->msg_handler_tab = rdtss_16bit_msg_handler_tab;
-	p_task_desc->msg_cnt         = ARRAY_LEN(rdtss_16bit_msg_handler_tab);
-	p_task_desc->state           = p_rdtss_16bit_env->state;
-	p_task_desc->idx_max         = RDTSS_16BIT_IDX_MAX;
+	p_task_desc->msg_handler_tab = custom_srv_msg_handler_tab;
+	p_task_desc->msg_cnt         = ARRAY_LEN(custom_srv_msg_handler_tab);
+	p_task_desc->state           = p_custom_srv_env->state;
+	p_task_desc->idx_max         = CUSTOM_SRV_IDX_MAX;
 }
 
-#endif // BLE_RDTSS_16BIT_SERVER

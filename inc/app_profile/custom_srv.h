@@ -26,19 +26,21 @@
  * ****************************************************************************/
 
 /**
- * @file rdtss_16bit.h
+ * @file custom_srv.h
  * @author Nations Firmware Team
  * @version v1.0.0
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
 
-#ifndef _RDTSS_16BIT_H_
-#define _RDTSS_16BIT_H_
+#ifndef _CUSTOM_SRV_H_
+#define _CUSTOM_SRV_H_
 
 #include "rwip_config.h"              // SW configuration
 
-#if (BLE_RDTSS_16BIT_SERVER)
+// #NOTE: reuse RDTSS TASK ID
+#define TASK_ID_CUSTOM_SRV TASK_ID_RDTSS_16BIT
+#define custom_srv_prf_itf_get rdtss_16bit_prf_itf_get
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
@@ -46,14 +48,14 @@
 #include "prf.h"
 #include "attm.h"
 
-#include "rdts_common.h"
+#include "custom_srv_common.h"
 
-#define RDTSS_16BIT_IDX_MAX        (1)
+#define CUSTOM_SRV_IDX_MAX        (1)
 
 /* Public typedef -----------------------------------------------------------*/
 
 /// Value element
-struct rdtss_16bit_val_elmt {
+struct custom_srv_val_elmt {
 	/// list element header
 	struct co_list_hdr hdr;
 	/// value identifier
@@ -65,7 +67,7 @@ struct rdtss_16bit_val_elmt {
 };
 
 /// rdtss environment variable
-struct rdtss_16bit_env_tag {
+struct custom_srv_env_tag {
 	/// profile environment
 	prf_env_t prf_env;
 	/// Service Start Handle
@@ -82,8 +84,8 @@ struct rdtss_16bit_env_tag {
 
 	/// List of values set by application
 	struct co_list values;
-	/// rdtss_16bit task state
-	ke_state_t state[RDTSS_16BIT_IDX_MAX];
+	/// custom_srv task state
+	ke_state_t state[CUSTOM_SRV_IDX_MAX];
 };
 
 
@@ -93,17 +95,16 @@ struct rdtss_16bit_env_tag {
  * @brief Disable actions grouped in getting back to IDLE and sending configuration to requester task
  * @param[in] conhdl    Connection Handle
  */
-void rdtss_16bit_disable(uint16_t conhdl);
+void custom_srv_disable(uint16_t conhdl);
 
-const struct prf_task_cbs* rdtss_16bit_prf_itf_get(void);
+const struct prf_task_cbs* custom_srv_prf_itf_get(void);
 
 /**
  * Initialize task handler
  *
  * @param p_task_desc Task descriptor to fill
  */
-void rdtss_16bit_task_init(struct ke_task_desc* p_task_desc);
+void custom_srv_task_init(struct ke_task_desc* p_task_desc);
 
-#endif // (BLE_RDTSS_16BIT_SERVER)
 
-#endif // _RDTSS_16BIT_H_
+#endif // _CUSTOM_SRV_H_

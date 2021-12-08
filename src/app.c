@@ -72,10 +72,7 @@
 	#include "app_ns_ius.h"                 // NS_IUS Application Definitions
 #endif //(BLE_APP_NS_IUS)
 
-#if (BLE_RDTSS_16BIT_SERVER)
-	#include "app_rdtss_16bit.h"                 // RDTSS_16BITApplication Definitions
-#endif //(BLE_RDTSS_16BIT_SERVER)
-
+#include "app_custom_srv.h"
 
 #if (NS_TIMER_ENABLE)
 	#include "ns_timer.h"
@@ -144,9 +141,7 @@ enum app_svc_list {
 #if (BLE_APP_NS_IUS)
 	APP_SVC_NS_IUS,
 #endif //(BLE_APP_NS_IUS)  
-#if (BLE_RDTSS_16BIT_SERVER)
-	APP_SVC_RDTSS_16,
-#endif //(BLE_RDTSS_16BIT_SERVER)  
+	APP_SVC_CUSTOM_SRV,
 
 	APP_SVC_LIST_STOP,
 };
@@ -170,10 +165,7 @@ static const app_add_svc_func_t app_add_svc_func_list[APP_SVC_LIST_STOP] = {
 #if (BLE_APP_NS_IUS)
 	(app_add_svc_func_t)app_ns_ius_add_ns_ius,
 #endif //(BLE_APP_NS_IUS) 
-#if (BLE_RDTSS_16BIT_SERVER)
-	(app_add_svc_func_t)app_rdtss_16bit_add_rdtss_16bit,
-#endif //(BLE_RDTSS_16BIT_SERVER)    
-
+	(app_add_svc_func_t)app_custom_srv_add_profile,
 };
 
 /// Application Environment Structure
@@ -446,11 +438,7 @@ void app_init()
 	app_ns_ius_init();
 #endif //(BLE_APP_NS_IUS)
 
-#if (BLE_RDTSS_16BIT_SERVER)
-	// rdtss 16bit uuid Module
-	app_rdtss_16bit_init();
-#endif //(BLE_RDTSS_16BIT_SERVER)
-
+	app_custom_srv_init();
 	// Reset the stack
 	app_send_gapm_reset_cmd();
 

@@ -102,6 +102,7 @@
 #define CFG_APP_BATT 1
 #define CFG_PRF_BASS 1
 //#define CFG_PRF_RDTSS 1
+// NOTE: must be enable to enable related func in the stack.
 #define CFG_PRF_RDTSS_16BIT 1
 
 #ifdef BLE_OTA_ENABLE
@@ -113,7 +114,7 @@
 #define NS_LOG_ERROR_ENABLE      1
 #define NS_LOG_WARNING_ENABLE    1
 #define NS_LOG_INFO_ENABLE       1
-#define NS_LOG_DEBUG_ENABLE      1
+#define NS_LOG_DEBUG_ENABLE      0
 
 // #define NS_LOG_LPUART_ENABLE     1
 #define NS_LOG_USART_ENABLE      1

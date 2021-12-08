@@ -26,7 +26,7 @@
  * ****************************************************************************/
 
 /**
- * @file app_rdtss_16bit.h
+ * @file app_custom_srv.h
  * @author Nations Firmware Team
  * @version v1.0.0
  *
@@ -34,8 +34,8 @@
  */
 
 
-#ifndef APP_RDTSS_16BIT_H_
-#define APP_RDTSS_16BIT_H_
+#ifndef APP_CUSTOM_SRV_H_
+#define APP_CUSTOM_SRV_H_
 
 /**
  * @addtogroup APP
@@ -49,8 +49,7 @@
 /* Includes ------------------------------------------------------------------*/
 
 #include "rwip_config.h"     // SW configuration
-
-#if (BLE_RDTSS_16BIT_SERVER)
+#include "custom_srv.h"
 
 /// Manufacturer Name Value
 #define APP_RDTSS_16BIT_MANUFACTURER_NAME       ("CUST1_16")
@@ -64,39 +63,37 @@
 
 /// rdtss 16bit uuid Service Attributes Indexes
 enum {
-	RDTSS_16BIT_IDX_SVC,
+	CUSTOM_SRV_IDX_SVC,
 
-	RDTSS_16BIT_IDX_WRITE_CHAR,
-	RDTSS_16BIT_IDX_WRITE_VAL,
-	RDTSS_16BIT_IDX_WRITE_CFG,
+	CUSTOM_SRV_IDX_WRITE_CHAR,
+	CUSTOM_SRV_IDX_WRITE_VAL,
+	CUSTOM_SRV_IDX_WRITE_CFG,
 
-	RDTSS_16BIT_IDX_NTF_CHAR,
-	RDTSS_16BIT_IDX_NTF_VAL,
-	RDTSS_16BIT_IDX_NTF_CFG,
+	CUSTOM_SRV_IDX_NTF_CHAR,
+	CUSTOM_SRV_IDX_NTF_VAL,
+	CUSTOM_SRV_IDX_NTF_CFG,
 
-	RDTSS_16BIT_IDX_NB,
+	CUSTOM_SRV_IDX_NB,
 };
 
-extern struct attm_desc rdtss_16bit_att_db[RDTSS_16BIT_IDX_NB];
+extern struct attm_desc custom_srv_att_db[CUSTOM_SRV_IDX_NB];
 
 /// Table of message handlers
-extern const struct app_subtask_handlers app_rdtss_16bit_handlers;
+extern const struct app_subtask_handlers app_custom_srv_handlers;
 
 /**
  * @brief Initialize Device Information Service Application
  **/
-void app_rdtss_16bit_init(void);
+void app_custom_srv_init(void);
 
 /**
  * @brief Add a Device Information Service instance in the DB
  **/
-void app_rdtss_16bit_add_rdtss_16bit(void);
+void app_custom_srv_add_profile(void);
 
-void rdtss_16bit_send_notify(uint8_t* data, uint16_t length);
+void custom_srv_send_notify(uint8_t* data, uint16_t length);
 
-
-#endif //BLE_RDTSS_16BIT_SERVER
 
 /// @} APP
 
-#endif // APP_RDTSS_16BIT_H_
+#endif // APP_CUSTOM_SRV_H_

@@ -588,9 +588,9 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdts_common.c</FileName>
+              <FileName>custom_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdts_common.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
@@ -705,14 +705,14 @@
               </FileOption>
             </File>
             <File>
-              <FileName>rdtss_16bit.c</FileName>
+              <FileName>custom_srv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss_16bit_task.c</FileName>
+              <FileName>custom_srv_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdtss_16bit_task.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -963,9 +963,9 @@
               <FilePath>..\src\app_profile\app_batt.c</FilePath>
             </File>
             <File>
-              <FileName>app_rdtss_16bit.c</FileName>
+              <FileName>app_custom_srv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\app_rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\app_custom_srv.c</FilePath>
             </File>
             <File>
               <FileName>app_ns_ius.c</FileName>
@@ -1664,9 +1664,9 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdts_common.c</FileName>
+              <FileName>custom_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdts_common.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
@@ -1679,14 +1679,14 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\ns_ius\ns_iuss\src\ns_iuss_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss_16bit.c</FileName>
+              <FileName>custom_srv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss_16bit_task.c</FileName>
+              <FileName>custom_srv_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdtss_16bit_task.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1799,9 +1799,9 @@
               <FilePath>..\src\app_profile\app_batt.c</FilePath>
             </File>
             <File>
-              <FileName>app_rdtss_16bit.c</FileName>
+              <FileName>app_custom_srv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\app_rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\app_custom_srv.c</FilePath>
             </File>
             <File>
               <FileName>app_ns_ius.c</FileName>
@@ -2448,9 +2448,9 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdts_common.c</FileName>
+              <FileName>custom_srv_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdts_common.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
@@ -2463,14 +2463,14 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\ns_ius\ns_iuss\src\ns_iuss_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss_16bit.c</FileName>
+              <FileName>custom_srv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss_16bit_task.c</FileName>
+              <FileName>custom_srv_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\rdtss_16bit_task.c</FilePath>
+              <FilePath>..\src\app_profile\custom_srv_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2583,9 +2583,9 @@
               <FilePath>..\src\app_profile\app_batt.c</FilePath>
             </File>
             <File>
-              <FileName>app_rdtss_16bit.c</FileName>
+              <FileName>app_custom_srv.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\src\app_profile\app_rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\app_custom_srv.c</FilePath>
             </File>
             <File>
               <FileName>app_ns_ius.c</FileName>

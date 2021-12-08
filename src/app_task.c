@@ -73,9 +73,7 @@
 	#include "ns_dfu_ble.h"
 #endif //(BLE_APP_NS_IUS)
 
-#if (BLE_RDTSS_16BIT_SERVER)
-	#include "app_rdtss_16bit.h"              // RDTSS_16BITApplication Definitions
-#endif //(BLE_RDTSS_16BIT_SERVER)
+#include "app_custom_srv.h"              // RDTSS_16BITApplication Definitions
 
 #include "ahi_task.h"
 #include "co_hci.h"
@@ -846,14 +844,6 @@ static int app_msg_handler(ke_msg_id_t const msgid,
 		break;
 #endif //(BLE_APP_BATT)
 
-#if(BLE_RDTSS_SERVER)
-		case (TASK_ID_RDTSS): {
-			// Call the rdtss Module
-			msg_pol = app_get_handler(&app_rdtss_handlers, msgid, p_param, src_id);
-		}
-		break;
-#endif //(BLE_RDTSS_SERVER)
-
 #if(BLE_APP_NS_IUS)
 		case (TASK_ID_NS_IUS): {
 			msg_pol = app_get_handler(&ns_ius_app_handlers, msgid, p_param, src_id);
@@ -861,13 +851,11 @@ static int app_msg_handler(ke_msg_id_t const msgid,
 		break;
 #endif //(BLE_APP_NS_IUS)
 
-#if(BLE_RDTSS_16BIT_SERVER)
-		case (TASK_ID_RDTSS_16BIT): {
-			// Call the rdtss_16bit Module
-			msg_pol = app_get_handler(&app_rdtss_16bit_handlers, msgid, p_param, src_id);
+		case (TASK_ID_CUSTOM_SRV): {
+			// Call the custom_srv Module
+			msg_pol = app_get_handler(&app_custom_srv_handlers, msgid, p_param, src_id);
 		}
 		break;
-#endif //(BLE_RDTSS_16BIT_SERVER)
 
 		default: {
 
