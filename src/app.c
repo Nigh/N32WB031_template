@@ -85,7 +85,6 @@
 #include "global_var.h"
 #include "ke_timer.h"
 
-#include "app_usart.h"
 #include "app_callback.h"
 #include "app_user_callback_config.h"
 /* Private define ------------------------------------------------------------*/
@@ -126,7 +125,7 @@
  */
 /// Advertising channel map - 37, 38, 39
 #define APP_ADV_CHMAP           (0x07)
-
+uint16_t ble_att_mtu = (ATT_DEFAULT_MTU - 3);
 /* Private typedef -----------------------------------------------------------*/
 typedef void (*app_add_svc_func_t)(void);
 

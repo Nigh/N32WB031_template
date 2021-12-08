@@ -213,6 +213,8 @@ bool app_add_svc(void);
  **/
 uint8_t app_get_dev_name(uint8_t* p_name);
 
+extern uint16_t ble_att_mtu;
+
 #if (BLE_APP_PRF)
 	/**
 	* @brief

@@ -74,11 +74,11 @@
 
 /*  connection config  */
 #define MIN_CONN_INTERVAL                   15                                        /**< Minimum connection interval (15 ms) */
-#define MAX_CONN_INTERVAL                   30                                         /**< Maximum connection interval (30 ms). */
+#define MAX_CONN_INTERVAL                   50                                         /**< Maximum connection interval (30 ms). */
 #define SLAVE_LATENCY                       0                                          /**< Slave latency. */
 #define CONN_SUP_TIMEOUT                    500                                        /**< Connection supervisory timeout (500ms). */
 
-#define FIRST_CONN_PARAMS_UPDATE_DELAY      (5000)                                     /**<  Time of initiating event to update connection params (5 seconds). */
+#define FIRST_CONN_PARAMS_UPDATE_DELAY      (3000)                                     /**<  Time of initiating event to update connection params (5 seconds). */
 
 //sec config
 #define SEC_PARAM_IO_CAPABILITIES           GAP_IO_CAP_NO_INPUT_NO_OUTPUT               /**< No I/O capabilities. (@enum gap_io_cap) */
@@ -97,13 +97,12 @@
 #define BOND_STORE_ENABLE                   0
 
 /* profiles config  */
-#define CFG_APP_DIS       1
-#define CFG_PRF_DISS      1
-#define CFG_APP_BATT    1
-#define CFG_PRF_BASS    1
-//#define CFG_PRF_RDTSS      1
-#define CFG_PRF_RDTSS_16BIT     1
-
+#define CFG_APP_DIS 1
+#define CFG_PRF_DISS 1
+#define CFG_APP_BATT 1
+#define CFG_PRF_BASS 1
+//#define CFG_PRF_RDTSS 1
+#define CFG_PRF_RDTSS_16BIT 1
 
 #ifdef BLE_OTA_ENABLE
 	#define CFG_APP_NS_IUS     1
@@ -120,7 +119,7 @@
 
 #define NS_TIMER_ENABLE          1
 
-#define FIRMWARE_VERSION         "1.0.0"
+#define FIRMWARE_VERSION         "0.0.1"
 #define HARDWARE_VERSION         "1.0.0"
 
 

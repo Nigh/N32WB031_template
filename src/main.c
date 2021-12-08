@@ -45,7 +45,6 @@
 #include "ns_sleep.h"
 #include "ns_delay.h"
 #include "ns_log.h"
-#include "app_usart.h"
 #include "app_gpio.h"
 
 #if  (CFG_APP_NS_IUS)
@@ -54,8 +53,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define DEMO_STRING  "\r\n Nations raw data transfer server(16bit UUID) demo \r\n"
-
 /* Private constants ---------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -86,25 +83,15 @@ int main(void)
 	app_init();
 	prf_init(RWIP_INIT);
 
-	NS_LOG_INFO(DEMO_STRING);
-
 	// periph init
 	LedInit(LED1_PORT, LED1_PIN); // power led
 	LedInit(LED2_PORT, LED2_PIN); //connection state
 	LedOn(LED1_PORT, LED1_PIN);
-	app_usart_dma_enable(ENABLE);
-	//init text
-	usart_tx_dma_send((uint8_t*)DEMO_STRING, sizeof(DEMO_STRING));
-
-
-	delay_n_10us(500);
-	//disable usart for enter sleep
-	app_usart_dma_enable(DISABLE);
+	// delay_n_10us(500);
 	while (1) {
 		/*schedule all pending events*/
 		rwip_schedule();
 		ns_sleep();
-
 	}
 }
 
@@ -139,8 +126,6 @@ void app_sleep_resume_proc(void)
  */
 void app_ble_connected(void)
 {
-	//enable usart receive
-	app_usart_dma_enable(ENABLE);
 	LedOn(LED2_PORT, LED2_PIN);
 }
 
@@ -152,8 +137,6 @@ void app_ble_connected(void)
  */
 void app_ble_disconnected(void)
 {
-	//disable usart receive
-	app_usart_dma_enable(DISABLE);
 	LedOff(LED2_PORT, LED2_PIN);
 }
 

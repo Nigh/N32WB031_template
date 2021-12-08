@@ -94,7 +94,6 @@
 	#include "ns_timer.h"
 #endif //NS_TIMER_ENABLE
 
-#include "app_usart.h"
 #include "app_gpio.h"
 #include "app_fsm.h"
 /* Private typedef -----------------------------------------------------------*/
@@ -1002,14 +1001,13 @@ int app_entry_point_handler(ke_msg_id_t const msgid,
 	return (KE_MSG_CONSUMED);
 }
 
-extern void app_usart_tx_process(void);
 __STATIC int app_rdtss_timer_evt_handler(ke_msg_id_t const msgid,
         uint8_t* p_param,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	//check again the tx fifo after tx irq
-	app_usart_tx_process();
+	// check again the tx fifo after tx irq
+	// DELETED
 	return (KE_MSG_CONSUMED);
 }
 

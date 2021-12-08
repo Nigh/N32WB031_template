@@ -53,7 +53,6 @@
 
 #include "stdio.h"
 #include "app_task.h"
-#include "app_usart.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -199,7 +198,8 @@ static int rdtss_16bit_val_write_ind_handler(ke_msg_id_t const msgid,
 			break;
 		case RDTSS_16BIT_IDX_WRITE_VAL:
 			NS_LOG_DEBUG("RDTSS_16BIT_IDX_WRITE_VAL\r\n");
-			app_usart_tx_fifo_enter(ind_value->value, ind_value->length);
+			// TODO: Receive
+			// app_usart_tx_fifo_enter(ind_value->value, ind_value->length);
 			break;
 		default:
 			break;
@@ -221,9 +221,7 @@ static int rdtss_16bit_val_ntf_cfm_handler(ke_msg_id_t const msgid,
         ke_task_id_t const src_id)
 {
 	NS_LOG_DEBUG("Func:[%s]\r\n\tntf cfm handle = %x\r\n\tstatus = %x\r\n", __func__, cfm_value->handle, cfm_value->status);
-
-	usart_forward_to_ble_loop();
-
+	// usart_forward_to_ble_loop();
 	return (KE_MSG_CONSUMED);
 }
 
