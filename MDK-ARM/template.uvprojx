@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>rdts</OutputName>
+          <OutputName>template_repo</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -1125,7 +1125,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>rdtss_ota</OutputName>
+          <OutputName>template_repo_ota1</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -1158,8 +1158,8 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>fromelf --bin --output=.\bin\rdtss_ota.bin .\Objects\rdtss_ota.axf</UserProg1Name>
-            <UserProg2Name>cmd.exe /C copy .\bin\rdtss_ota.bin G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\utilities\dfu\Image\APP1.bin</UserProg2Name>
+            <UserProg1Name>fromelf --bin --output=.\bin\template_repo_ota1.bin .\Objects\template_repo_ota1.axf</UserProg1Name>
+            <UserProg2Name>cmd.exe /C copy .\bin\template_repo_ota1.bin G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\utilities\dfu\Image\APP1.bin</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -1909,7 +1909,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>rdtss_ota</OutputName>
+          <OutputName>template_repo_ota2</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -1942,8 +1942,8 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>1</RunUserProg2>
-            <UserProg1Name>fromelf --bin --output=.\bin\rdtss_ota.bin .\Objects\rdtss_ota.axf</UserProg1Name>
-            <UserProg2Name>cmd.exe /C copy .\bin\rdtss_ota.bin G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\utilities\dfu\Image\APP2.bin</UserProg2Name>
+            <UserProg1Name>fromelf --bin --output=.\bin\template_repo_ota2.bin .\Objects\template_repo_ota2.axf</UserProg1Name>
+            <UserProg2Name>cmd.exe /C copy .\bin\template_repo_ota2.bin G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\utilities\dfu\Image\APP2.bin</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
