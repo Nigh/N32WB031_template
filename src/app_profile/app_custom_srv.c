@@ -140,12 +140,12 @@ static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n\twrite handle = %x\r\n\tlength = %x\r\n", __func__, ind_value->handle, ind_value->length);
+	NS_LOG_DEBUG("Func:[%s]\r\n\twrite handle = %x\r\n\tlength = %x\r\n\t", __func__, ind_value->handle, ind_value->length);
 
 	for(uint16_t i = 0; i < ind_value->length; i++) {
-		NS_LOG_DEBUG("%x ", ind_value->value[i]);
+		NS_LOG_INFO("%x ", ind_value->value[i]);
 	}
-	NS_LOG_DEBUG("\r\n");
+	NS_LOG_INFO("\r\n");
 
 	uint16_t handle = ind_value->handle;
 	uint16_t length = ind_value->length;
