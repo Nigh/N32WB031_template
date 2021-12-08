@@ -107,12 +107,12 @@ static int custom_srv_value_req_ind_handler(ke_msg_id_t const msgid,
 	// Pointer to the data
 	uint8_t* data = NULL;
 
-	len = APP_RDTSS_16BIT_MANUFACTURER_NAME_LEN;
-	data = (uint8_t*)APP_RDTSS_16BIT_MANUFACTURER_NAME;
+	len = APP_CUSTOMS_16BIT_MANUFACTURER_NAME_LEN;
+	data = (uint8_t*)APP_CUSTOMS_16BIT_MANUFACTURER_NAME;
 
 
 	// Allocate confirmation to send the value
-	struct custom_srv_value_req_rsp* rsp_value = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VALUE_REQ_RSP,
+	struct custom_srv_value_req_rsp* rsp_value = KE_MSG_ALLOC_DYN(CUSTOMS_16BIT_VALUE_REQ_RSP,
 	        src_id, dest_id,
 	        custom_srv_value_req_rsp,
 	        len);
@@ -202,7 +202,7 @@ static int custom_srv_val_ntf_cfm_handler(ke_msg_id_t const msgid,
  */
 void custom_srv_send_notify(uint8_t* data, uint16_t length)
 {
-	struct custom_srv_val_ntf_ind_req* req = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VAL_NTF_REQ,
+	struct custom_srv_val_ntf_ind_req* req = KE_MSG_ALLOC_DYN(CUSTOMS_16BIT_VAL_NTF_REQ,
 	        prf_get_task_from_id(TASK_ID_CUSTOM_SRV),
 	        TASK_APP,
 	        custom_srv_val_ntf_ind_req,
@@ -220,9 +220,9 @@ void custom_srv_send_notify(uint8_t* data, uint16_t length)
 
 /// Default State handlers definition
 const struct ke_msg_handler app_custom_srv_msg_handler_list[] = {
-	{RDTSS_16BIT_VALUE_REQ_IND,                    (ke_msg_func_t)custom_srv_value_req_ind_handler},
-	{RDTSS_16BIT_VAL_WRITE_IND,                    (ke_msg_func_t)custom_srv_val_write_ind_handler},
-	{RDTSS_16BIT_VAL_NTF_CFM,                      (ke_msg_func_t)custom_srv_val_ntf_cfm_handler},
+	{CUSTOMS_16BIT_VALUE_REQ_IND,                    (ke_msg_func_t)custom_srv_value_req_ind_handler},
+	{CUSTOMS_16BIT_VAL_WRITE_IND,                    (ke_msg_func_t)custom_srv_val_write_ind_handler},
+	{CUSTOMS_16BIT_VAL_NTF_CFM,                      (ke_msg_func_t)custom_srv_val_ntf_cfm_handler},
 
 };
 

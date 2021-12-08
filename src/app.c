@@ -64,10 +64,6 @@
 	#include "app_batt.h"                // Battery Application Definitions
 #endif //(BLE_APP_DIS)
 
-#if (BLE_RDTSS_SERVER)
-	#include "app_rdtss.h"                 // RDTSS Application Definitions
-#endif //(BLE_RDTSS_SERVER)
-
 #if (BLE_APP_NS_IUS)
 	#include "app_ns_ius.h"                 // NS_IUS Application Definitions
 #endif //(BLE_APP_NS_IUS)
@@ -135,9 +131,6 @@ enum app_svc_list {
 #if (BLE_APP_BATT)
 	APP_SVC_BATT,
 #endif //(BLE_APP_BATT)
-#if (BLE_RDTSS_SERVER)
-	APP_SVC_RDTS,
-#endif //(BLE_RDTSS_SERVER)
 #if (BLE_APP_NS_IUS)
 	APP_SVC_NS_IUS,
 #endif //(BLE_APP_NS_IUS)  
@@ -159,9 +152,6 @@ static const app_add_svc_func_t app_add_svc_func_list[APP_SVC_LIST_STOP] = {
 #if (BLE_APP_BATT)
 	(app_add_svc_func_t)app_batt_add_bas,
 #endif //(BLE_APP_BATT)
-#if (BLE_RDTSS_SERVER)
-	(app_add_svc_func_t)app_rdtss_add_rdts,
-#endif //(BLE_RDTSS_SERVER)
 #if (BLE_APP_NS_IUS)
 	(app_add_svc_func_t)app_ns_ius_add_ns_ius,
 #endif //(BLE_APP_NS_IUS) 
@@ -427,11 +417,6 @@ void app_init()
 	// Battery Module
 	app_batt_init();
 #endif //(BLE_APP_BATT)
-
-#if (BLE_RDTSS_SERVER)
-	// rdtss Module
-	app_rdtss_init();
-#endif //(BLE_RDTSS_SERVER)
 
 #if (BLE_APP_NS_IUS)
 	// DFU OTA Service

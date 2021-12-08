@@ -64,16 +64,12 @@
 	#include "bass_task.h"
 #endif //(BLE_APP_BATT)
 
-#if (BLE_RDTSS_SERVER)
-	#include "app_rdtss.h"              // RDTSS Application Definitions
-#endif //(BLE_RDTSS_SERVER)
-
 #if (BLE_APP_NS_IUS)
 	#include "app_ns_ius.h"              // NS IUS Application Definitions
 	#include "ns_dfu_ble.h"
 #endif //(BLE_APP_NS_IUS)
 
-#include "app_custom_srv.h"              // RDTSS_16BITApplication Definitions
+#include "app_custom_srv.h"              // CUSTOMS_16BITApplication Definitions
 
 #include "ahi_task.h"
 #include "co_hci.h"

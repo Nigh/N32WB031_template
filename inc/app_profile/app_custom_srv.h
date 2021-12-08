@@ -52,8 +52,8 @@
 #include "custom_srv.h"
 
 /// Manufacturer Name Value
-#define APP_RDTSS_16BIT_MANUFACTURER_NAME       ("CUST1_16")
-#define APP_RDTSS_16BIT_MANUFACTURER_NAME_LEN   (8)
+#define APP_CUSTOMS_16BIT_MANUFACTURER_NAME       ("CUST1_16")
+#define APP_CUSTOMS_16BIT_MANUFACTURER_NAME_LEN   (8)
 
 
 

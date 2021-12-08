@@ -58,7 +58,7 @@ static uint8_t custom_srv_init(struct prf_task_env* env, uint16_t* start_hdl, ui
 		struct custom_srv_env_tag* custom_srv_env =
 		    (struct custom_srv_env_tag*) ke_malloc(sizeof(struct custom_srv_env_tag), KE_MEM_ATT_DB);
 
-		// allocate RDTSS_16BITrequired environment variable
+		// allocate CUSTOMS_16BITrequired environment variable
 		env->env = (prf_env_t*)custom_srv_env;
 		custom_srv_env->shdl = *start_hdl;
 		custom_srv_env->max_nb_att = CUSTOM_SRV_IDX_NB;
@@ -75,13 +75,13 @@ static uint8_t custom_srv_init(struct prf_task_env* env, uint16_t* start_hdl, ui
 		custom_srv_init_ccc_values(custom_srv_att_db, CUSTOM_SRV_IDX_NB);
 
 		// service is ready, go into an Idle state
-		ke_state_set(env->task, RDTSS_16BIT_IDLE);
+		ke_state_set(env->task, CUSTOMS_16BIT_IDLE);
 	}
 
 	return status;
 }
 /**
- * @brief Destruction of the RDTSS_16BITmodule - due to a reset for instance.
+ * @brief Destruction of the CUSTOMS_16BITmodule - due to a reset for instance.
  * This function clean-up allocated memory (attribute database is destroyed by another
  * procedure)
  *
@@ -151,12 +151,12 @@ static void custom_srv_cleanup(struct prf_task_env* env, uint8_t conidx, uint8_t
 		}
 	}
 
-	ke_state_set(prf_src_task_get(&(custom_srv_env->prf_env), conidx), RDTSS_16BIT_IDLE);
+	ke_state_set(prf_src_task_get(&(custom_srv_env->prf_env), conidx), CUSTOMS_16BIT_IDLE);
 }
 
 /* Public variables ---------------------------------------------------------*/
 
-/// RDTSS_16BITTask interface required by profile manager
+/// CUSTOMS_16BITTask interface required by profile manager
 const struct prf_task_cbs custom_srv_itf = {
 	(prf_init_fnct) custom_srv_init,
 	custom_srv_destroy,

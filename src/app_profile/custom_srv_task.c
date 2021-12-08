@@ -213,7 +213,7 @@ static void custom_srv_exe_operation(void)
 	if (!notification_sent) {
 		if (app_req->notification) {
 			// Inform the application that the notification PDU has been sent over the air.
-			struct custom_srv_val_ntf_cfm* cfm = KE_MSG_ALLOC(RDTSS_16BIT_VAL_NTF_CFM,
+			struct custom_srv_val_ntf_cfm* cfm = KE_MSG_ALLOC(CUSTOMS_16BIT_VAL_NTF_CFM,
 			                                     custom_srv_env->operation->src_id, custom_srv_env->operation->dest_id,
 			                                     custom_srv_val_ntf_cfm);
 			cfm->handle = app_req->handle;
@@ -221,7 +221,7 @@ static void custom_srv_exe_operation(void)
 			ke_msg_send(cfm);
 		} else {
 			// Inform the application that the indication has been confirmed by the peer device.
-			struct custom_srv_val_ind_cfm* cfm = KE_MSG_ALLOC(RDTSS_16BIT_VAL_IND_CFM,
+			struct custom_srv_val_ind_cfm* cfm = KE_MSG_ALLOC(CUSTOMS_16BIT_VAL_IND_CFM,
 			                                     custom_srv_env->operation->src_id, custom_srv_env->operation->dest_id,
 			                                     custom_srv_val_ind_cfm);
 			cfm->handle = app_req->handle;
@@ -230,7 +230,7 @@ static void custom_srv_exe_operation(void)
 		}
 		ke_free(custom_srv_env->operation);
 		custom_srv_env->operation = NULL;
-		ke_state_set(prf_src_task_get(&(custom_srv_env->prf_env), 0), RDTSS_16BIT_IDLE);
+		ke_state_set(prf_src_task_get(&(custom_srv_env->prf_env), 0), CUSTOMS_16BIT_IDLE);
 	}
 }
 
@@ -264,7 +264,7 @@ static int gattc_cmp_evt_handler(ke_msg_id_t const msgid,
 }
 
 /**
- * @brief Handles reception of the @ref RDTSS_16BIT_VAL_SET_REQ message.
+ * @brief Handles reception of the @ref CUSTOMS_16BIT_VAL_SET_REQ message.
  * @param[in] msgid Id of the message received (probably unused).
  * @param[in] param Pointer to the parameters of the message.
  * @param[in] dest_id ID of the receiving task instance (probably unused).
@@ -284,7 +284,7 @@ static int custom_srv_val_set_req_handler(ke_msg_id_t const msgid,
 }
 
 /**
- * @brief Handles reception of the @ref RDTSS_16BIT_VAL_NTF_REQ message.
+ * @brief Handles reception of the @ref CUSTOMS_16BIT_VAL_NTF_REQ message.
  * @param[in] msgid Id of the message received (probably unused).
  * @param[in] param Pointer to the parameters of the message.
  * @param[in] dest_id ID of the receiving task instance (probably unused).
@@ -304,7 +304,7 @@ static int custom_srv_val_ntf_req_handler(ke_msg_id_t const msgid,
 
 	uint8_t state = ke_state_get(dest_id);
 
-	if (state == RDTSS_16BIT_BUSY) {
+	if (state == CUSTOMS_16BIT_BUSY) {
 		return KE_MSG_SAVED;
 	}
 
@@ -316,7 +316,7 @@ static int custom_srv_val_ntf_req_handler(ke_msg_id_t const msgid,
 	status = custom_srv_get_att_idx(ccc_hdl, &ccc_idx);
 	ASSERT_ERR(status == ATT_ERR_NO_ERROR);
 
-	ke_state_set(dest_id, RDTSS_16BIT_BUSY);
+	ke_state_set(dest_id, CUSTOMS_16BIT_BUSY);
 	custom_srv_env->operation = ke_param2msg(param);
 	custom_srv_env->cursor = 0;
 	custom_srv_env->ccc_idx = ccc_idx;
@@ -328,7 +328,7 @@ static int custom_srv_val_ntf_req_handler(ke_msg_id_t const msgid,
 }
 
 /**
- * @brief Handles reception of the @ref RDTSS_16BIT_VAL_IND_REQ message.
+ * @brief Handles reception of the @ref CUSTOMS_16BIT_VAL_IND_REQ message.
  * @param[in] msgid Id of the message received (probably unused).
  * @param[in] param Pointer to the parameters of the message.
  * @param[in] dest_id ID of the receiving task instance (probably unused).
@@ -347,7 +347,7 @@ static int custom_srv_val_ind_req_handler(ke_msg_id_t const msgid,
 	uint8_t status;
 
 	uint8_t state = ke_state_get(dest_id);
-	if (state == RDTSS_16BIT_BUSY) {
+	if (state == CUSTOMS_16BIT_BUSY) {
 		return KE_MSG_SAVED;
 	}
 
@@ -359,7 +359,7 @@ static int custom_srv_val_ind_req_handler(ke_msg_id_t const msgid,
 	status = custom_srv_get_att_idx(ccc_hdl, &ccc_idx);
 	ASSERT_ERR(status == ATT_ERR_NO_ERROR);
 
-	ke_state_set(dest_id, RDTSS_16BIT_BUSY);
+	ke_state_set(dest_id, CUSTOMS_16BIT_BUSY);
 	custom_srv_env->operation = ke_param2msg(param);
 	custom_srv_env->cursor = 0;
 	custom_srv_env->ccc_idx = ccc_idx;
@@ -371,7 +371,7 @@ static int custom_srv_val_ind_req_handler(ke_msg_id_t const msgid,
 }
 
 /**
- * @brief Handles reception of the @ref RDTSS_16BIT_ATT_INFO_RSP message.
+ * @brief Handles reception of the @ref CUSTOMS_16BIT_ATT_INFO_RSP message.
  * @param[in] msgid Id of the message received (probably unused).
  * @param[in] param Pointer to the parameters of the message.
  * @param[in] dest_id ID of the receiving task instance.
@@ -385,7 +385,7 @@ static int custom_srv_att_info_rsp_handler(ke_msg_id_t const msgid,
 {
 	uint8_t state = ke_state_get(dest_id);
 
-	if (state == RDTSS_16BIT_IDLE) {
+	if (state == CUSTOMS_16BIT_IDLE) {
 		// Extract the service start handle.
 		struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 		// Allocate the attribute information confirmation message.
@@ -415,7 +415,7 @@ static int gattc_read_req_ind_handler(ke_msg_id_t const msgid, struct gattc_read
 {
 	ke_state_t state = ke_state_get(dest_id);
 
-	if(state == RDTSS_16BIT_IDLE) {
+	if(state == CUSTOMS_16BIT_IDLE) {
 		struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 		struct gattc_read_cfm* cfm;
 		uint8_t att_idx = 0;
@@ -436,7 +436,7 @@ static int gattc_read_req_ind_handler(ke_msg_id_t const msgid, struct gattc_read
 				length = 2;
 			} else {
 				// Request value from application
-				struct custom_srv_value_req_ind* req_ind = KE_MSG_ALLOC(RDTSS_16BIT_VALUE_REQ_IND,
+				struct custom_srv_value_req_ind* req_ind = KE_MSG_ALLOC(CUSTOMS_16BIT_VALUE_REQ_IND,
 				        prf_dst_task_get(&(custom_srv_env->prf_env), KE_IDX_GET(src_id)),
 				        dest_id,
 				        custom_srv_value_req_ind);
@@ -448,7 +448,7 @@ static int gattc_read_req_ind_handler(ke_msg_id_t const msgid, struct gattc_read
 				ke_msg_send(req_ind);
 
 				// Put Service in a busy state
-				ke_state_set(dest_id, RDTSS_16BIT_BUSY);
+				ke_state_set(dest_id, CUSTOMS_16BIT_BUSY);
 
 				return (KE_MSG_CONSUMED);
 			}
@@ -525,7 +525,7 @@ static int gattc_write_req_ind_handler(ke_msg_id_t const msgid, const struct gat
 
 		if (status == ATT_ERR_NO_ERROR) {
 			// Inform APP
-			struct custom_srv_val_write_ind* req_id = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VAL_WRITE_IND,
+			struct custom_srv_val_write_ind* req_id = KE_MSG_ALLOC_DYN(CUSTOMS_16BIT_VAL_WRITE_IND,
 			        prf_dst_task_get(&(custom_srv_env->prf_env), KE_IDX_GET(src_id)),
 			        dest_id, custom_srv_val_write_ind,
 			        param->length);
@@ -562,12 +562,12 @@ static int gattc_att_info_req_ind_handler(ke_msg_id_t const msgid,
 {
 	uint8_t state = ke_state_get(dest_id);
 
-	if (state == RDTSS_16BIT_IDLE) {
+	if (state == CUSTOMS_16BIT_IDLE) {
 		// Extract the service start handle.
 		struct custom_srv_env_tag* custom_srv_env = PRF_ENV_GET(CUSTOM_SRV, custom_srv);
 		// Allocate the attribute information request message to be processed by
 		// the application.
-		struct custom_srv_att_info_req* req = KE_MSG_ALLOC(RDTSS_16BIT_ATT_INFO_REQ,
+		struct custom_srv_att_info_req* req = KE_MSG_ALLOC(CUSTOMS_16BIT_ATT_INFO_REQ,
 		                                      TASK_APP,
 		                                      dest_id,
 		                                      custom_srv_att_info_req);
@@ -583,7 +583,7 @@ static int gattc_att_info_req_ind_handler(ke_msg_id_t const msgid,
 }
 
 /**
- * @brief Handles reception of the @ref RDTSS_16BIT_VALUE_REQ_RSP message.
+ * @brief Handles reception of the @ref CUSTOMS_16BIT_VALUE_REQ_RSP message.
  * @param[in] msgid Id of the message received (probably unused).
  * @param[in] param Pointer to the parameters of the message.
  * @param[in] dest_id ID of the receiving task instance.
@@ -597,7 +597,7 @@ static int custom_srv_value_req_rsp_handler(ke_msg_id_t const msgid,
 {
 	ke_state_t state = ke_state_get(dest_id);
 
-	if(state == RDTSS_16BIT_BUSY) {
+	if(state == CUSTOMS_16BIT_BUSY) {
 		if (param->status == ATT_ERR_NO_ERROR) {
 			// Send value to peer device.
 			struct gattc_read_cfm* cfm = KE_MSG_ALLOC_DYN(GATTC_READ_CFM,
@@ -631,7 +631,7 @@ static int custom_srv_value_req_rsp_handler(ke_msg_id_t const msgid,
 		}
 
 		// Return to idle state
-		ke_state_set(dest_id, RDTSS_16BIT_IDLE);
+		ke_state_set(dest_id, CUSTOMS_16BIT_IDLE);
 	}
 	return (KE_MSG_CONSUMED);
 }
@@ -645,11 +645,11 @@ KE_MSG_HANDLER_TAB(custom_srv)
 	{GATTC_WRITE_REQ_IND,                (ke_msg_func_t)gattc_write_req_ind_handler},
 	{GATTC_ATT_INFO_REQ_IND,             (ke_msg_func_t)gattc_att_info_req_ind_handler},
 	{GATTC_CMP_EVT,                      (ke_msg_func_t)gattc_cmp_evt_handler},
-	{RDTSS_16BIT_VAL_NTF_REQ,            (ke_msg_func_t)custom_srv_val_ntf_req_handler},
-	{RDTSS_16BIT_VAL_SET_REQ,            (ke_msg_func_t)custom_srv_val_set_req_handler},
-	{RDTSS_16BIT_VAL_IND_REQ,            (ke_msg_func_t)custom_srv_val_ind_req_handler},
-	{RDTSS_16BIT_ATT_INFO_RSP,           (ke_msg_func_t)custom_srv_att_info_rsp_handler},
-	{RDTSS_16BIT_VALUE_REQ_RSP,          (ke_msg_func_t)custom_srv_value_req_rsp_handler},
+	{CUSTOMS_16BIT_VAL_NTF_REQ,            (ke_msg_func_t)custom_srv_val_ntf_req_handler},
+	{CUSTOMS_16BIT_VAL_SET_REQ,            (ke_msg_func_t)custom_srv_val_set_req_handler},
+	{CUSTOMS_16BIT_VAL_IND_REQ,            (ke_msg_func_t)custom_srv_val_ind_req_handler},
+	{CUSTOMS_16BIT_ATT_INFO_RSP,           (ke_msg_func_t)custom_srv_att_info_rsp_handler},
+	{CUSTOMS_16BIT_VALUE_REQ_RSP,          (ke_msg_func_t)custom_srv_value_req_rsp_handler},
 };
 
 void custom_srv_task_init(struct ke_task_desc* p_task_desc)
