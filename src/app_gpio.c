@@ -136,12 +136,12 @@ void btn_to_start_up(void)
 		if((GPIO_ReadInputDataBit(KEY1_INPUT_PORT, KEY1_INPUT_PIN) == 0) || (GPIO_ReadInputDataBit(KEY2_INPUT_PORT, KEY2_INPUT_PIN) == 0)) {
 			break;
 		}
-		delay_n_ms(331);
+		delay_n_ms(231);
 		LedBlink(LED1_PORT, LED1_PIN);
 		if((GPIO_ReadInputDataBit(KEY1_INPUT_PORT, KEY1_INPUT_PIN) == 0) || (GPIO_ReadInputDataBit(KEY2_INPUT_PORT, KEY2_INPUT_PIN) == 0)) {
 			break;
 		}
-		delay_n_ms(331);
+		delay_n_ms(231);
 		LedBlink(LED2_PORT, LED2_PIN);
 	}
 	LedOff(LED1_PORT, LED1_PIN);

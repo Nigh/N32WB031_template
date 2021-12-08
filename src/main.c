@@ -71,7 +71,7 @@ int main(void)
 
 	NS_BLE_STACK_INIT();
 	NS_LOG_INIT();
-
+	NS_LOG_INFO("LOG INIT Succeed\r\n");
 #if  (CFG_APP_NS_IUS)
 	if(CURRENT_APP_START_ADDRESS == NS_APP1_START_ADDRESS) {
 		NS_LOG_INFO("application 1 start new ...\r\n");
@@ -84,8 +84,8 @@ int main(void)
 	prf_init(RWIP_INIT);
 
 	// periph init
-	LedInit(LED1_PORT, LED1_PIN); // power led
-	LedInit(LED2_PORT, LED2_PIN); //connection state
+	// LedInit(LED1_PORT, LED1_PIN); // power led
+	// LedInit(LED2_PORT, LED2_PIN); //connection state
 	LedOn(LED1_PORT, LED1_PIN);
 	// delay_n_10us(500);
 	while (1) {

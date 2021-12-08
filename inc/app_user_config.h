@@ -39,7 +39,7 @@
 #include "ns_adv_data_def.h"
 
 /* Device name */
-#define CUSTOM_DEVICE_NAME                  "NS_RDTSS"
+#define CUSTOM_DEVICE_NAME                  "Ci_CSRV_TEST"
 #define CUSTOM_BLE_MAC_ADDRESS              "\x08\x02\x03\x04\x05\x06"
 
 //DIS server configer
@@ -47,10 +47,10 @@
 
 
 /* adv configer*/
-#define CUSTOM_ADV_FAST_INTERVAL               0x0028                                     /**< Fast advertising interval (in units of 0.625 ms. This value corresponds to 25 ms.). */
-#define CUSTOM_ADV_SLOW_INTERVAL               0x0C80                                     /**< Slow advertising interval (in units of 0.625 ms. This value corrsponds to 2 seconds). */
+#define CUSTOM_ADV_FAST_INTERVAL               160                                     /**< Fast advertising interval (in units of 0.625 ms. This value corresponds to 25 ms.). */
+#define CUSTOM_ADV_SLOW_INTERVAL               800                                     /**< Slow advertising interval (in units of 0.625 ms. This value corrsponds to 2 seconds). */
 
-#define CUSTOM_ADV_FAST_DURATION               0//30                                         /**< The advertising duration of fast advertising in units of 1 seconds. maximum is 655 seconds */
+#define CUSTOM_ADV_FAST_DURATION               0                                         /**< The advertising duration of fast advertising in units of 1 seconds. maximum is 655 seconds */
 #define CUSTOM_ADV_SLOW_DURATION               180                                        /**< The advertising duration of slow advertising in units of 1 seconds. maximum is 655 seconds */
 
 // Advertise data
@@ -74,9 +74,9 @@
 
 /*  connection config  */
 #define MIN_CONN_INTERVAL                   15                                        /**< Minimum connection interval (15 ms) */
-#define MAX_CONN_INTERVAL                   50                                         /**< Maximum connection interval (30 ms). */
+#define MAX_CONN_INTERVAL                   100                                         /**< Maximum connection interval (30 ms). */
 #define SLAVE_LATENCY                       0                                          /**< Slave latency. */
-#define CONN_SUP_TIMEOUT                    500                                        /**< Connection supervisory timeout (500ms). */
+#define CONN_SUP_TIMEOUT                    900                                        /**< Connection supervisory timeout (500ms). */
 
 #define FIRST_CONN_PARAMS_UPDATE_DELAY      (3000)                                     /**<  Time of initiating event to update connection params (5 seconds). */
 
@@ -115,7 +115,8 @@
 #define NS_LOG_INFO_ENABLE       1
 #define NS_LOG_DEBUG_ENABLE      1
 
-#define NS_LOG_LPUART_ENABLE     1
+// #define NS_LOG_LPUART_ENABLE     1
+#define NS_LOG_USART_ENABLE      1
 
 #define NS_TIMER_ENABLE          1
 

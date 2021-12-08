@@ -918,6 +918,11 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\sleep\ns_sleep.c</FilePath>
             </File>
             <File>
+              <FileName>ns_log_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\log\ns_log_usart.c</FilePath>
+            </File>
+            <File>
               <FileName>ns_error.c</FileName>
               <FileType>1</FileType>
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\error\ns_error.c</FilePath>
@@ -1749,6 +1754,11 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\sleep\ns_sleep.c</FilePath>
             </File>
             <File>
+              <FileName>ns_log_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\log\ns_log_usart.c</FilePath>
+            </File>
+            <File>
               <FileName>ns_error.c</FileName>
               <FileType>1</FileType>
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\error\ns_error.c</FilePath>
@@ -2526,6 +2536,11 @@
               <FileName>ns_sleep.c</FileName>
               <FileType>1</FileType>
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\sleep\ns_sleep.c</FilePath>
+            </File>
+            <File>
+              <FileName>ns_log_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_library\log\ns_log_usart.c</FilePath>
             </File>
             <File>
               <FileName>ns_error.c</FileName>
