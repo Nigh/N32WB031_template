@@ -588,19 +588,9 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss.c</FilePath>
-            </File>
-            <File>
-              <FileName>rdtss_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_task.c</FilePath>
-            </File>
-            <File>
               <FileName>rdts_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdts_common.c</FilePath>
+              <FilePath>..\src\app_profile\rdts_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
@@ -717,12 +707,12 @@
             <File>
               <FileName>rdtss_16bit.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\rdtss_16bit.c</FilePath>
             </File>
             <File>
               <FileName>rdtss_16bit_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit_task.c</FilePath>
+              <FilePath>..\src\app_profile\rdtss_16bit_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1052,11 +1042,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\app_usart.c</FilePath>
             </File>
             <File>
               <FileName>app_gpio.c</FileName>
@@ -1674,19 +1659,9 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss.c</FilePath>
-            </File>
-            <File>
-              <FileName>rdtss_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_task.c</FilePath>
-            </File>
-            <File>
               <FileName>rdts_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdts_common.c</FilePath>
+              <FilePath>..\src\app_profile\rdts_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
@@ -1701,12 +1676,12 @@
             <File>
               <FileName>rdtss_16bit.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\rdtss_16bit.c</FilePath>
             </File>
             <File>
               <FileName>rdtss_16bit_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit_task.c</FilePath>
+              <FilePath>..\src\app_profile\rdtss_16bit_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1847,11 +1822,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\app_usart.c</FilePath>
             </File>
             <File>
               <FileName>app_gpio.c</FileName>
@@ -2468,19 +2438,9 @@
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
-              <FileName>rdtss.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss.c</FilePath>
-            </File>
-            <File>
-              <FileName>rdtss_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_task.c</FilePath>
-            </File>
-            <File>
               <FileName>rdts_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdts_common.c</FilePath>
+              <FilePath>..\src\app_profile\rdts_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
@@ -2495,12 +2455,12 @@
             <File>
               <FileName>rdtss_16bit.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit.c</FilePath>
+              <FilePath>..\src\app_profile\rdtss_16bit.c</FilePath>
             </File>
             <File>
               <FileName>rdtss_16bit_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit_task.c</FilePath>
+              <FilePath>..\src\app_profile\rdtss_16bit_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2641,11 +2601,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\app_usart.c</FilePath>
             </File>
             <File>
               <FileName>app_gpio.c</FileName>
