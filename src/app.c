@@ -567,7 +567,7 @@ void app_delete_advertising(void)
 
 void app_adv_fsm_next(void)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n\tadv_state:%d \r\n", __func__, app_env.adv_state);
+	NS_LOG_DEBUG("Func:[%s]\r\n\tadv_state:%d\r\n", __func__, app_env.adv_state);
 	switch (app_env.adv_state) {
 		case (APP_ADV_STATE_IDLE): {
 			// Create advertising

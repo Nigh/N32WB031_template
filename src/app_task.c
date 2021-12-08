@@ -109,7 +109,7 @@ static int appm_gattc_cmp_evt_handler(ke_msg_id_t const msgid, struct gattc_cmp_
                                       ke_task_id_t const dest_id, ke_task_id_t const src_id)
 {
 
-	NS_LOG_DEBUG("Func:[%s] status = %x,  operation = %x\r\n", __func__, gattc_cmp_evt->status, gattc_cmp_evt->operation);
+	NS_LOG_DEBUG("Func:[%s]\r\n\tstatus = %x\r\n\toperation = %x\r\n", __func__, gattc_cmp_evt->status, gattc_cmp_evt->operation);
 	if((gattc_cmp_evt->operation == GATTC_NOTIFY) || (gattc_cmp_evt->operation == GATTC_INDICATE)) {
 		// Indicate data transmission finished
 
@@ -154,7 +154,7 @@ static uint8_t app_get_handler(const struct app_subtask_handlers* handler_list_d
 {
 	// Counter
 	uint8_t counter;
-	NS_LOG_DEBUG("Func:[%s]\tsid:%d\r\n", __func__, src_id);
+	NS_LOG_DEBUG("Func:[%s]\r\n\tsid:%d\r\n", __func__, src_id);
 	// Get the message handler function by parsing the message table
 	for (counter = handler_list_desc->msg_cnt; 0 < counter; counter--) {
 		struct ke_msg_handler handler
@@ -248,7 +248,7 @@ static int gapm_profile_added_ind_handler(ke_msg_id_t const msgid,
 
 	// Current State
 	ke_state_t state = ke_state_get(dest_id);
-	NS_LOG_DEBUG("Func:[%s]\tstate %x\r\n", __func__, state);
+	NS_LOG_DEBUG("Func:[%s]\r\n\tstate %x\r\n", __func__, state);
 
 	if (state == APP_CREATE_DB) {
 		switch (p_param->prf_task_id) {
@@ -279,9 +279,7 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
                                 ke_task_id_t const dest_id,
                                 ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]", __func__);
-	NS_LOG_DEBUG("\top = %02x\r\n", p_param->operation);
-	NS_LOG_DEBUG("\tstatus = %02x\r\n", p_param->status);
+	NS_LOG_DEBUG("Func:[%s]\r\n\top = %02x\r\n\tstatus = %02x\r\n", __func__, p_param->operation, p_param->status);
 
 	switch(p_param->operation) {
 
@@ -471,8 +469,7 @@ static int gapc_get_dev_info_req_ind_handler(ke_msg_id_t const msgid,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n", __func__);
-	NS_LOG_DEBUG("\treq:%d\r\n", p_param->req);
+	NS_LOG_DEBUG("Func:[%s]\r\n\treq:%d\r\n", __func__, p_param->req);
 
 	switch(p_param->req) {
 		case GAPC_DEV_NAME: {
@@ -576,8 +573,7 @@ static int gapc_connection_req_ind_handler(ke_msg_id_t const msgid,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n", __func__);
-	NS_LOG_DEBUG("\tsid:%d\r\n", src_id);
+	NS_LOG_DEBUG("Func:[%s]\r\n\tsid:%d\r\n", __func__, src_id);
 	app_env.conidx = KE_IDX_GET(src_id);
 
 	// Check if the received connection index is valid
@@ -703,9 +699,7 @@ static int gapc_cmp_evt_handler(ke_msg_id_t const msgid,
                                 ke_task_id_t const dest_id,
                                 ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n", __func__);
-	NS_LOG_DEBUG("\toperation =%x\r\n", p_param->operation);
-	NS_LOG_DEBUG("\tstatus = %x\r\n", p_param->status);
+	NS_LOG_DEBUG("Func:[%s]\r\n\top =%x\r\n\tstatus = %x\r\n", __func__, p_param->operation, p_param->status);
 	switch(p_param->operation) {
 		case (GAPC_UPDATE_PARAMS): {
 #if (BLE_APP_NS_IUS)
@@ -803,9 +797,7 @@ static int app_msg_handler(ke_msg_id_t const msgid,
 	// Message policy
 	uint8_t msg_pol = KE_MSG_CONSUMED;
 
-	NS_LOG_DEBUG("Func:[%s]\r\n", __func__);
-	NS_LOG_DEBUG("\ttask = %x\r\n", src_task_id);
-	NS_LOG_DEBUG("\tmsg = %x\r\n", MSG_I(msgid));
+	NS_LOG_DEBUG("Func:[%s]\r\n\ttask = %x\r\n\tmsg = %x\r\n", __func__, src_task_id, MSG_I(msgid));
 	switch (src_task_id) {
 		case (TASK_ID_GAPC): {
 #if (BLE_APP_SEC)
