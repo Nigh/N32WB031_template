@@ -43,8 +43,11 @@ extern "C" {
 
 #define LED1_PORT GPIOB
 #define LED1_PIN  GPIO_PIN_0
+#define LED1 LED1_PORT,LED1_PIN
+
 #define LED2_PORT GPIOA
 #define LED2_PIN  GPIO_PIN_6
+#define LED2 LED2_PORT,LED2_PIN
 
 #define KEY1_INPUT_PORT        GPIOB
 #define KEY1_INPUT_PIN         GPIO_PIN_1
@@ -60,12 +63,10 @@ extern "C" {
 #define KEY2_INPUT_PIN_SOURCE  GPIO_PIN_SOURCE2
 #define KEY2_INPUT_IRQn        EXTI2_3_IRQn
 
-
-
-void LedInit(GPIO_Module* GPIOx, uint16_t Pin);
-void LedOn(GPIO_Module* GPIOx, uint16_t Pin);
-void LedOff(GPIO_Module* GPIOx, uint16_t Pin);
-void LedBlink(GPIO_Module* GPIOx, uint16_t Pin);
+void led_init(GPIO_Module* GPIOx, uint16_t Pin);
+void led_on(GPIO_Module* GPIOx, uint16_t Pin);
+void led_off(GPIO_Module* GPIOx, uint16_t Pin);
+void led_blink(GPIO_Module* GPIOx, uint16_t Pin);
 
 void btn_to_start_up(void);
 

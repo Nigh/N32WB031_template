@@ -83,11 +83,6 @@ int main(void)
 	app_init();
 	prf_init(RWIP_INIT);
 
-	// periph init
-	// LedInit(LED1_PORT, LED1_PIN); // power led
-	// LedInit(LED2_PORT, LED2_PIN); //connection state
-	LedOn(LED1_PORT, LED1_PIN);
-	// delay_n_10us(500);
 	while (1) {
 		/*schedule all pending events*/
 		rwip_schedule();
@@ -126,7 +121,6 @@ void app_sleep_resume_proc(void)
  */
 void app_ble_connected(void)
 {
-	LedOn(LED2_PORT, LED2_PIN);
 }
 
 /**
@@ -137,7 +131,6 @@ void app_ble_connected(void)
  */
 void app_ble_disconnected(void)
 {
-	LedOff(LED2_PORT, LED2_PIN);
 }
 
 /**

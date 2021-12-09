@@ -52,7 +52,7 @@
  * @param Led Specifies the Led to be configured.
  *   This parameter can be GPIO_PIN_0~GPIO_PIN_13.
  */
-void LedInit(GPIO_Module* GPIOx, uint16_t Pin)
+void led_init(GPIO_Module* GPIOx, uint16_t Pin)
 {
 	GPIO_InitType GPIO_InitStructure;
 
@@ -81,7 +81,7 @@ void LedInit(GPIO_Module* GPIOx, uint16_t Pin)
  * @param GPIOx x can be A to B to select the GPIO port.
  * @param Pin This parameter can be GPIO_PIN_0~GPIO_PIN_13.
  */
-void LedOn(GPIO_Module* GPIOx, uint16_t Pin)
+void led_on(GPIO_Module* GPIOx, uint16_t Pin)
 {
 	GPIO_SetBits(GPIOx, Pin);
 }
@@ -91,7 +91,7 @@ void LedOn(GPIO_Module* GPIOx, uint16_t Pin)
  * @param GPIOx x can be A to B to select the GPIO port.
  * @param Pin This parameter can be GPIO_PIN_0~GPIO_PIN_13.
  */
-void LedOff(GPIO_Module* GPIOx, uint16_t Pin)
+void led_off(GPIO_Module* GPIOx, uint16_t Pin)
 {
 	GPIO_ResetBits(GPIOx, Pin);
 }
@@ -101,7 +101,7 @@ void LedOff(GPIO_Module* GPIOx, uint16_t Pin)
  * @param GPIOx x can be A to B to select the GPIO port.
  * @param Pin This parameter can be GPIO_PIN_0~GPIO_PIN_13.
  */
-void LedBlink(GPIO_Module* GPIOx, uint16_t Pin)
+void led_blink(GPIO_Module* GPIOx, uint16_t Pin)
 {
 	GPIO_TogglePin(GPIOx, Pin);
 }
@@ -127,25 +127,26 @@ void key_init(void)
 	GPIO_InitStructure.GPIO_Pull    = GPIO_PULL_UP;
 	GPIO_InitPeripheral(KEY2_INPUT_PORT, &GPIO_InitStructure);
 }
+
 void btn_to_start_up(void)
 {
 	key_init();
-	LedInit(LED1_PORT, LED1_PIN);
-	LedInit(LED2_PORT, LED2_PIN);
+	led_init(LED1);
+	led_init(LED2);
 	while(1) {
 		if((GPIO_ReadInputDataBit(KEY1_INPUT_PORT, KEY1_INPUT_PIN) == 0) || (GPIO_ReadInputDataBit(KEY2_INPUT_PORT, KEY2_INPUT_PIN) == 0)) {
 			break;
 		}
-		delay_n_ms(231);
-		LedBlink(LED1_PORT, LED1_PIN);
+		delay_n_ms(131);
+		led_blink(LED1);
 		if((GPIO_ReadInputDataBit(KEY1_INPUT_PORT, KEY1_INPUT_PIN) == 0) || (GPIO_ReadInputDataBit(KEY2_INPUT_PORT, KEY2_INPUT_PIN) == 0)) {
 			break;
 		}
-		delay_n_ms(231);
-		LedBlink(LED2_PORT, LED2_PIN);
+		delay_n_ms(131);
+		led_blink(LED2);
 	}
-	LedOff(LED1_PORT, LED1_PIN);
-	LedOff(LED2_PORT, LED2_PIN);
+	led_off(LED1);
+	led_off(LED2);
 }
 
 
