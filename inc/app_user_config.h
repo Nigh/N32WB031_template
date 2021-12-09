@@ -39,11 +39,8 @@
 #include "ns_adv_data_def.h"
 
 /* Device name */
-#define CUSTOM_DEVICE_NAME                  "Ci_CSRV_TEST"
+#define CUSTOM_DEVICE_NAME                  "N32WB_TEST"
 #define CUSTOM_BLE_MAC_ADDRESS              "\x08\x02\x03\x04\x05\x06"
-
-//DIS server configer
-#define MANUFACTURER_NAME                   "Nations"
 
 
 /* adv configer*/
@@ -55,18 +52,18 @@
 
 // Advertise data
 #define CUSTOM_USER_ADVERTISE_DATA \
-	"\x03"\
+	"\x05"\
 	ADV_TYPE_SERVICE_DATA_16BIT_UUID\
-	ADV_UUID_DEVICE_INFORMATION_SERVICE\
+	"\x00\xCC\xCC\x01"
 
 
 #define CUSTOM_USER_ADVERTISE_DATA_LEN (sizeof(CUSTOM_USER_ADVERTISE_DATA)-1)
 
 // Scan response data
 #define CUSTOM_USER_ADV_SCNRSP_DATA  \
-	"\x0a"\
+	"\x0d"\
 	ADV_TYPE_MANUFACTURER_SPECIFIC_DATA\
-	"\xff\xffNations"
+	"\xff\xffHelloWorks"
 
 // Scan response data length- maximum 31 bytes
 #define CUSTOM_USER_ADV_SCNRSP_DATA_LEN (sizeof(CUSTOM_USER_ADV_SCNRSP_DATA)-1)
@@ -94,7 +91,7 @@
 
 //bond conifg
 #define MAX_BOND_PEER                       5
-#define BOND_STORE_ENABLE                   0
+#define BOND_STORE_ENABLE                   1
 
 /* profiles config  */
 #define CFG_APP_DIS 1
@@ -110,6 +107,7 @@
 #endif
 
 /* User config  */
+#define MCU_LSC_SEL_LSE 1
 
 #define NS_LOG_ERROR_ENABLE      1
 #define NS_LOG_WARNING_ENABLE    1
