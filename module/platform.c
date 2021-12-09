@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "ns_log.h"
+#include "ns_sleep.h"
+#include "scheduler.h"
 
 
 void LOG_HEX_RAW_IMP(uint8_t* array, uint16_t length)
@@ -79,7 +81,7 @@ void btn_on_uevt_handler(uevt_t* evt)
 			break;
 	}
 }
-void button_handler(uint8_t* data, uint16_t length)
+void button_handler(uint8_t* data)
 {
 	// 使用单按钮逻辑，同时只允许单个按钮按下
 	static uint8_t current_down = 0xFF;
@@ -102,7 +104,7 @@ void button_handler_ISR(uint8_t pin_no, uint8_t button_action)
 	static uint8_t data[2];
 	data[0] = pin_no;
 	data[1] = button_action;
-	platform_evt_put(data, 2, button_handler);
+	// platform_evt_put(&data, button_handler);
 }
 
 bool is_button_release(uint32_t btn)
@@ -112,8 +114,6 @@ bool is_button_release(uint32_t btn)
 
 void button_config(void)
 {
-	uint32_t err;
-
 	user_event_handler_regist(btn_on_uevt_handler);
 }
 
@@ -128,19 +128,9 @@ void io_config(void)
 	leds_config();
 }
 
-static void log_init(void)
-{
-	LOG_INIT();
-	LOG_RAW("LOG INIT Succeed\r\n");
-}
-
 void platform_init(void)
 {
-#if NS_LOG_ENABLED==1
-	log_init();
-#endif
-	LOG_RAW("LOG INIT\r\n");
-	user_event_init();
+
 	rtc_config();
 	io_config();
 }
@@ -166,6 +156,7 @@ void shutdown_routine(void)
 void platform_scheduler(void)
 {
 	rwip_schedule();
+	app_sched_execute();
 	if(is_going_to_shutdown) {
 		shutdown_routine();
 	}

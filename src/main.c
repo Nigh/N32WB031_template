@@ -42,7 +42,6 @@
 #include "ble_stack_common.h"
 #include "app.h"
 #include "prf.h"
-#include "ns_sleep.h"
 #include "ns_delay.h"
 #include "app_gpio.h"
 #include "platform.h"
@@ -59,6 +58,28 @@
 /* Private functions ---------------------------------------------------------*/
 
 
+void main_handler(uevt_t* evt)
+{
+	switch(evt->evt_id) {
+		case UEVT_APP_SETUP:
+			LOG_RAW("UEVT_APP_SETUP\r\n");
+			platform_init();
+			app_init();
+			prf_init(RWIP_INIT);
+			uevt_bc_e(UEVT_APP_START);
+			break;
+		case UEVT_APP_START:
+			LOG_RAW("UEVT_APP_START\r\n");
+			break;
+	}
+}
+
+void module_init(void)
+{
+	// 模块的初始化应当只进行handler的注册
+	// xxx_init();
+}
+
 /**
  * @brief  main function
  * @param
@@ -70,7 +91,6 @@ int main(void)
 	btn_to_start_up();
 
 	NS_BLE_STACK_INIT();
-
 #if (CFG_APP_NS_IUS)
 	if(CURRENT_APP_START_ADDRESS == NS_APP1_START_ADDRESS) {
 		LOG_RAW("application 1 start new ...\r\n");
@@ -78,12 +98,16 @@ int main(void)
 		LOG_RAW("application 2 start new ...\r\n");
 	}
 #endif
+#if NS_LOG_ENABLED==1
+	LOG_INIT();
+	LOG_RAW("LOG INIT Succeed\r\n");
+#endif
+	app_sched_init();
+	user_event_init();
+	user_event_handler_regist(main_handler);
+	module_init();
 
-	platform_init();
-
-	app_init();
-	prf_init(RWIP_INIT);
-
+	uevt_bc_e(UEVT_APP_SETUP);
 	while (1) {
 		platform_scheduler();
 	}

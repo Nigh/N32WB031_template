@@ -23,9 +23,9 @@ void user_event_handler_unregist(fpevt_h func);
 void user_event_array_dispatcher(uevt_t evt);
 
 #if NS_LOG_ENABLED==1 && EVT_LOG_ENABLED==1
-#define uevt_bc(x,y) LOG_RAW("EVT:" #x "\r\n"); \
+#define uevt_bc(x,y) LOG_RAW("EVT Push:" #x "\r\n"); \
 	user_event_broadcast((uevt_t){x,y})
-#define uevt_bc_e(x) LOG_RAW("EVT:" #x "\r\n"); \
+#define uevt_bc_e(x) LOG_RAW("EVT Push:" #x "\r\n"); \
 	user_event_broadcast((uevt_t){x,NULL})
 #else
 #define uevt_bc(x,y) user_event_broadcast((uevt_t){x,y})

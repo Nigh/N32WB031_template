@@ -1069,6 +1069,11 @@
               <FilePath>..\module\platform.c</FilePath>
             </File>
             <File>
+              <FileName>scheduler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\module\scheduler.c</FilePath>
+            </File>
+            <File>
               <FileName>timedate.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\module\timedate.c</FilePath>
@@ -1899,6 +1904,11 @@
               <FilePath>..\module\platform.c</FilePath>
             </File>
             <File>
+              <FileName>scheduler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\module\scheduler.c</FilePath>
+            </File>
+            <File>
               <FileName>timedate.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\module\timedate.c</FilePath>
@@ -2726,6 +2736,11 @@
               <FileName>platform.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\module\platform.c</FilePath>
+            </File>
+            <File>
+              <FileName>scheduler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\module\scheduler.c</FilePath>
             </File>
             <File>
               <FileName>timedate.c</FileName>

@@ -4,16 +4,15 @@
 #include "compiler_abstraction.h"
 #include <stdint.h>
 #include <string.h>
+#include "scheduler.h"
 #include "uevent.h"
 #include "rwip_config.h"
 #include "rwip.h"
 #include "arch.h"
 
-// TODO:
-#define app_sched_event_put(...)
 
-#define platform_simple_evt_put(handler) app_sched_event_put(NULL,0,(app_sched_event_handler_t)handler)
-#define platform_evt_put(data,size,handler) app_sched_event_put(data,size,(app_sched_event_handler_t)handler)
+#define platform_simple_evt_put(handler) app_sched_event_put(NULL,(app_sched_event_handler_t)handler)
+#define platform_evt_put(p_evt,handler) app_sched_event_put(p_evt,(app_sched_event_handler_t)handler)
 
 #define LOG_INIT(x) NS_LOG_INIT()
 

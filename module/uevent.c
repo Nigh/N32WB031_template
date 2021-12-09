@@ -7,14 +7,17 @@ __WEAK void user_event_dispatcher(uevt_t evt)
 	LOG_RAW("[ERROR]event dispatcher NOT set!!!\r\n");
 }
 
-__WEAK void user_event_handler(uevt_t* evt, uint16_t _size_unused_)
+__WEAK void user_event_handler(uevt_t* evt)
 {
+	#if NS_LOG_ENABLED==1 && EVT_LOG_ENABLED==1
+	LOG_RAW("EVT Pop:%04X\r\n", evt->evt_id);
+	#endif
 	user_event_array_dispatcher(*evt);
 }
 
 void user_event_broadcast(uevt_t evt)
 {
-	platform_evt_put(&evt, sizeof(uevt_t), user_event_handler);
+	platform_evt_put(&evt, user_event_handler);
 }
 
 fpevt_h evt_handler_array[32] = {NULL};
