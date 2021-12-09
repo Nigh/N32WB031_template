@@ -56,8 +56,8 @@
 /* Define ------------------------------------------------------------*/
 
 /// Manufacturer Name Value
-#define APP_DIS_MANUFACTURER_NAME       ("Nations")
-#define APP_DIS_MANUFACTURER_NAME_LEN   (7)
+#define APP_DIS_MANUFACTURER_NAME       ("HelloWorks")
+#define APP_DIS_MANUFACTURER_NAME_LEN   (10)
 
 /// Model Number String Value
 #define APP_DIS_MODEL_NB_STR            ("NS-BLE-1.0")

@@ -44,8 +44,8 @@
 #include "prf.h"
 #include "ns_sleep.h"
 #include "ns_delay.h"
-#include "ns_log.h"
 #include "app_gpio.h"
+#include "platform.h"
 
 #if  (CFG_APP_NS_IUS)
 	#include "ns_dfu_boot.h"
@@ -70,23 +70,22 @@ int main(void)
 	btn_to_start_up();
 
 	NS_BLE_STACK_INIT();
-	NS_LOG_INIT();
-	NS_LOG_INFO("LOG INIT Succeed\r\n");
-#if  (CFG_APP_NS_IUS)
+
+#if (CFG_APP_NS_IUS)
 	if(CURRENT_APP_START_ADDRESS == NS_APP1_START_ADDRESS) {
-		NS_LOG_INFO("application 1 start new ...\r\n");
+		LOG_RAW("application 1 start new ...\r\n");
 	} else if(CURRENT_APP_START_ADDRESS == NS_APP2_START_ADDRESS) {
-		NS_LOG_INFO("application 2 start new ...\r\n");
+		LOG_RAW("application 2 start new ...\r\n");
 	}
 #endif
+
+	platform_init();
 
 	app_init();
 	prf_init(RWIP_INIT);
 
 	while (1) {
-		/*schedule all pending events*/
-		rwip_schedule();
-		ns_sleep();
+		platform_scheduler();
 	}
 }
 

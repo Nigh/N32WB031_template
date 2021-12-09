@@ -116,6 +116,7 @@
 #define NS_LOG_INFO_ENABLE       1
 #define NS_LOG_DEBUG_ENABLE      0
 
+#define NS_LOG_ENABLED 1
 // #define NS_LOG_LPUART_ENABLE     1
 #define NS_LOG_USART_ENABLE      1
 

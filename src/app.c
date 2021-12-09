@@ -393,8 +393,6 @@ void app_init()
 		// Get default Device Name (No name if not enough space)
 		memcpy(app_env.dev_name, APP_DFLT_DEVICE_NAME, APP_DFLT_DEVICE_NAME_LEN);
 		app_env.dev_name_len = APP_DFLT_DEVICE_NAME_LEN;
-
-		// TODO update this value per profiles
 	}
 
 	/*------------------------------------------------------
