@@ -28,8 +28,11 @@ void LOG_HEX_RAW_IMP(uint8_t* array, uint16_t length);
 
 #include "uevent.h"
 
+void btn_to_start_up(void);
+void button_init(void);
 void platform_init(void);
 void platform_scheduler(void);
+void platform_wakeup(void);
 
 void btn_on_uevt_handler(uevt_t* evt);
 
@@ -49,10 +52,14 @@ void btn_on_uevt_handler(uevt_t* evt);
 #define UEVT_RTC_NEWDAY (0x0003)
 
 #define UEVT_BTN_BASE (0x0100)
-#define UEVT_BTN_DOWN (0x0101)
-#define UEVT_BTN_RELEASE (0x0102)
-#define UEVT_BTN_LONG (0x0103)
-#define UEVT_BTN_REPEAT (0x0104)
+#define UEVT_BTN1_DOWN (0x0101)
+#define UEVT_BTN1_RELEASE (0x0102)
+#define UEVT_BTN1_LONG (0x0103)
+#define UEVT_BTN1_REPEAT (0x0104)
+#define UEVT_BTN2_DOWN (0x0101)
+#define UEVT_BTN2_RELEASE (0x0102)
+#define UEVT_BTN2_LONG (0x0103)
+#define UEVT_BTN2_REPEAT (0x0104)
 
 #define UEVT_DTIME_BASE (0x0500)
 #define UEVT_DTIME_UPDATE (UEVT_DTIME_BASE|0x01)

@@ -43,7 +43,6 @@
 #include "app.h"
 #include "prf.h"
 #include "ns_delay.h"
-#include "app_gpio.h"
 #include "platform.h"
 
 #if  (CFG_APP_NS_IUS)
@@ -60,12 +59,18 @@
 
 void main_handler(uevt_t* evt)
 {
+	static uint32_t sec = 0;
 	switch(evt->evt_id) {
+		case UEVT_RTC_1HZ:
+			LOG_RAW("\r\n[%06d]:", sec++);
+			break;
 		case UEVT_APP_SETUP:
 			LOG_RAW("UEVT_APP_SETUP\r\n");
-			platform_init();
+			// NOTE:BLE SWITCH
 			app_init();
 			prf_init(RWIP_INIT);
+
+			platform_init();
 			uevt_bc_e(UEVT_APP_START);
 			break;
 		case UEVT_APP_START:
@@ -73,10 +78,19 @@ void main_handler(uevt_t* evt)
 			break;
 	}
 }
-
+void rtc_1hz_handler(void)
+{
+	uevt_bc_e(UEVT_RTC_1HZ);
+}
+void rtc_8hz_isr(void)
+{
+	uevt_bc_e(UEVT_RTC_8HZ);
+}
 void module_init(void)
 {
-	// 模块的初始化应当只进行handler的注册
+	// NOTE:模块的初始化应当只进行handler的注册
+	button_init();
+	rtc_init();
 	// xxx_init();
 }
 
@@ -90,7 +104,9 @@ int main(void)
 {
 	btn_to_start_up();
 
+	// NOTE:BLE SWITCH
 	NS_BLE_STACK_INIT();
+
 #if (CFG_APP_NS_IUS)
 	if(CURRENT_APP_START_ADDRESS == NS_APP1_START_ADDRESS) {
 		LOG_RAW("application 1 start new ...\r\n");
@@ -100,7 +116,8 @@ int main(void)
 #endif
 #if NS_LOG_ENABLED==1
 	LOG_INIT();
-	LOG_RAW("LOG INIT Succeed\r\n");
+	LOG_RAW("\r\n\n\n\n\nLOG INIT Succeed\r\n");
+	LOG_RAW("============================\r\n");
 #endif
 	app_sched_init();
 	user_event_init();
@@ -121,7 +138,6 @@ int main(void)
  */
 void app_sleep_prepare_proc(void)
 {
-
 }
 
 /**
@@ -132,8 +148,9 @@ void app_sleep_prepare_proc(void)
  */
 void app_sleep_resume_proc(void)
 {
-
-
+	// LOG_RAW("WAKE\r\n");
+	// TODO: reinit GPIO
+	platform_wakeup();
 }
 
 /**

@@ -532,6 +532,11 @@
               <FileType>1</FileType>
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\firmware\n32wb03x_std_periph_driver\src\n32wb03x_qflash.c</FilePath>
             </File>
+            <File>
+              <FileName>n32wb03x_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rtc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1047,11 +1052,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\app_gpio.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1658,6 +1658,11 @@
               <FileType>1</FileType>
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\firmware\n32wb03x_std_periph_driver\src\n32wb03x_qflash.c</FilePath>
             </File>
+            <File>
+              <FileName>n32wb03x_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rtc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1882,11 +1887,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\app_gpio.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2492,6 +2492,11 @@
               <FileType>1</FileType>
               <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\firmware\n32wb03x_std_periph_driver\src\n32wb03x_qflash.c</FilePath>
             </File>
+            <File>
+              <FileName>n32wb03x_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>G:\_business\_n32wb_SDK\N32WB03x_SDK_V1.0.0\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rtc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2716,11 +2721,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>app_gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\app_gpio.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -88,7 +88,6 @@
 	#include "ns_timer.h"
 #endif //NS_TIMER_ENABLE
 
-#include "app_gpio.h"
 #include "app_fsm.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
