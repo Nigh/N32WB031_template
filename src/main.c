@@ -56,13 +56,21 @@
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-
+#define case_evt_log(XXX) case XXX:LOG_RAW("\r\nEVT:[" #XXX "]\r\n");break
 void main_handler(uevt_t* evt)
 {
 	static uint32_t sec = 0;
 	switch(evt->evt_id) {
+			case_evt_log(UEVT_BTN1_DOWN);
+			case_evt_log(UEVT_BTN1_RELEASE);
+			case_evt_log(UEVT_BTN1_LONG);
+			case_evt_log(UEVT_BTN1_REPEAT);
+			case_evt_log(UEVT_BTN2_DOWN);
+			case_evt_log(UEVT_BTN2_RELEASE);
+			case_evt_log(UEVT_BTN2_LONG);
+			case_evt_log(UEVT_BTN2_REPEAT);
 		case UEVT_RTC_1HZ:
-			LOG_RAW("\r\n[%06d]:", sec++);
+			LOG_RAW("\r\n[%08d]: ", sec++);
 			break;
 		case UEVT_APP_SETUP:
 			LOG_RAW("UEVT_APP_SETUP\r\n");
@@ -70,7 +78,6 @@ void main_handler(uevt_t* evt)
 			app_init();
 			prf_init(RWIP_INIT);
 
-			platform_init();
 			uevt_bc_e(UEVT_APP_START);
 			break;
 		case UEVT_APP_START:
@@ -88,10 +95,9 @@ void rtc_8hz_isr(void)
 }
 void module_init(void)
 {
-	// NOTE:模块的初始化应当只进行handler的注册
+	user_event_handler_regist(main_handler);
 	button_init();
 	rtc_init();
-	// xxx_init();
 }
 
 /**
@@ -119,9 +125,9 @@ int main(void)
 	LOG_RAW("\r\n\n\n\n\nLOG INIT Succeed\r\n");
 	LOG_RAW("============================\r\n");
 #endif
+	platform_init();
 	app_sched_init();
 	user_event_init();
-	user_event_handler_regist(main_handler);
 	module_init();
 
 	uevt_bc_e(UEVT_APP_SETUP);

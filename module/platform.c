@@ -62,10 +62,9 @@ static void leds_setup(void);
 uint32_t SynchPrediv, AsynchPrediv;
 #define VRTC_SynchPrediv (0xFF)
 #define VRTC_AsynchPrediv (0x7F)
-void EXTI9_RTCWKUP_Configuration(FunctionalState Cmd)
+void RTC_EXTI9_WKUP_Configuration(void)
 {
     EXTI_InitType EXTI_InitStructure;
-    NVIC_InitType NVIC_InitStructure;
 
     EXTI_ClrITPendBit(EXTI_LINE9);
     EXTI_InitStructure.EXTI_Line = EXTI_LINE9;
@@ -74,11 +73,20 @@ void EXTI9_RTCWKUP_Configuration(FunctionalState Cmd)
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;
     EXTI_InitPeripheral(&EXTI_InitStructure);
 
+}
+
+static void RTC_IRQHandler(void);
+void NVIC_RTC_WKUP_IRQ_Config(void)
+{
+    NVIC_InitType NVIC_InitStructure;
+
     /* Enable the RTC WakeUp Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel                   = RTC_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPriority           = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd                = Cmd;
+    NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPriority = 2;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
+    ModuleIrqRemoval(RTC_IRQn);
+    ModuleIrqRegister(RTC_IRQn, RTC_IRQHandler);
 }
 
 static void RTC_PrescalerConfig(void)
@@ -116,7 +124,7 @@ void RTC_CLKSourceConfig(void)
     LOG_RAW("RTC_ClkSrc Set LSE DONE! \r\n");
 }
 
-void RTC_IRQHandler(void)
+static void RTC_IRQHandler(void)
 {
     if (RTC_GetITStatus(RTC_INT_WUT) != RESET) {
         RTC_ClrIntPendingBit(RTC_INT_WUT);
@@ -124,6 +132,7 @@ void RTC_IRQHandler(void)
 		rtc_handler();
     }
 }
+
 static void rtc_setup(void)
 {
 	LOG_RAW("RTC SETUP\r\n");
@@ -132,9 +141,11 @@ static void rtc_setup(void)
 	RTC_ConfigWakeUpClock(RTC_WKUPCLK_RTCCLK_DIV16);
     RTC_EnableWakeUp(DISABLE);
     RTC_SetWakeUpCounter(0x100);
-    EXTI9_RTCWKUP_Configuration(ENABLE);
-    RTC_ConfigInt(RTC_INT_WUT, ENABLE);
+
+    RTC_EXTI9_WKUP_Configuration();
+	NVIC_RTC_WKUP_IRQ_Config();
     RTC_EnableWakeUp(ENABLE);
+    RTC_ConfigInt(RTC_INT_WUT, ENABLE);
 	LOG_RAW("RTC SETUP DONE\r\n");
 }
 void rtc_on_uevt_handler(uevt_t* evt)
@@ -150,93 +161,6 @@ void rtc_init(void)
 	user_event_handler_regist(rtc_on_uevt_handler);
 }
 
-// 使用单按钮逻辑，同时只允许单个按钮按下
-static uint8_t button_current_valid = 0xFF;
-static uint8_t button_chatter = 0;
-static uint8_t button_press_time = 0;
-void btn_on_uevt_handler(uevt_t* evt)
-{
-	switch(evt->evt_id) {
-		case UEVT_APP_SETUP:
-			button_setup();
-			break;
-		case UEVT_RTC_8HZ:
-			if(button_chatter > 0) {
-				button_press_time += 1;
-				if(button_press_time == 9) {
-					switch (button_current_valid) {
-						case 0x1:
-							uevt_bc_e(UEVT_BTN1_LONG);
-							break;
-						case 0x2:
-							uevt_bc_e(UEVT_BTN2_LONG);
-							break;
-					}
-				}
-				if(button_press_time > 0x10) {
-					button_press_time = 0x10;
-					switch (button_current_valid) {
-						case 0x1:
-							uevt_bc_e(UEVT_BTN1_REPEAT);
-							break;
-						case 0x2:
-							uevt_bc_e(UEVT_BTN2_REPEAT);
-							break;
-					}
-				}
-			}
-			break;
-	}
-}
-void button_handler(uint8_t* data)
-{
-	LOG_RAW("BTN HANDLER\r\n");
-	if(data[0]&0x80) {
-		// release event
-		button_chatter = 0;
-		button_press_time = 0;
-		switch(button_current_valid) {
-			case 0x1:
-				uevt_bc_e(UEVT_BTN1_RELEASE);
-				break;
-			case 0x2:
-				uevt_bc_e(UEVT_BTN2_RELEASE);
-				break;
-		}
-		button_current_valid = 0xFF;
-		return;
-	} else {
-		// press event
-		if(button_current_valid!=0xFF) {
-			button_chatter = 0;
-			button_press_time = 0;
-			switch(button_current_valid) {
-				case 0x1:
-					uevt_bc_e(UEVT_BTN1_RELEASE);
-					break;
-				case 0x2:
-					uevt_bc_e(UEVT_BTN2_RELEASE);
-					break;
-			}
-		}
-		button_current_valid = data[0];
-		button_chatter = 2;
-		button_press_time = 0;
-		switch(button_current_valid) {
-			case 0x1:
-				uevt_bc_e(UEVT_BTN1_DOWN);
-				break;
-			case 0x2:
-				uevt_bc_e(UEVT_BTN2_DOWN);
-				break;
-		}
-	}
-}
-
-bool is_button_release(uint32_t btn)
-{
-	// return (nrf_gpio_pin_read(btn) == (uint32_t)BUTTON_POL - 1) ? true : false;
-}
 
 void button_init(void)
 {
@@ -246,6 +170,9 @@ void button_init(void)
 #define LED1 GPIOB,GPIO_PIN_0
 #define LED2 GPIOA,GPIO_PIN_6
 
+
+#define KEY_NUMBER 2
+
 #define KEY1 GPIOB,GPIO_PIN_1
 #define KEY2 GPIOB,GPIO_PIN_2
 
@@ -254,6 +181,62 @@ void button_init(void)
 
 #define KEY2_INPUT_EXTI_LINE   EXTI_LINE2
 #define KEY2_INPUT_IRQn        EXTI2_3_IRQn
+
+#define KEY1_PORT_SOURCE GPIOB_PORT_SOURCE
+#define KEY1_PIN_SOURCE  GPIO_PIN_SOURCE1
+#define KEY2_PORT_SOURCE GPIOB_PORT_SOURCE
+#define KEY2_PIN_SOURCE  GPIO_PIN_SOURCE2
+
+static void nvic_set(IRQn_Type irq_channel, uint8_t priority, FunctionalState en)
+{
+	NVIC_InitType NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel                   = irq_channel;
+    NVIC_InitStructure.NVIC_IRQChannelPriority           = priority;
+    NVIC_InitStructure.NVIC_IRQChannelCmd                = en;
+    NVIC_Init(&NVIC_InitStructure);
+}
+static void key_exti_set(uint32_t exti_line, FunctionalState en)
+{
+	EXTI_InitType EXTI_InitStructure;
+    EXTI_InitStructure.EXTI_Line    = exti_line;
+    EXTI_InitStructure.EXTI_Mode    = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+    EXTI_InitStructure.EXTI_LineCmd = en;
+    EXTI_InitPeripheral(&EXTI_InitStructure);
+}
+
+#define key1_int_enable() key_exti_set(KEY1_INPUT_EXTI_LINE, ENABLE)
+#define key1_int_disable() key_exti_set(KEY1_INPUT_EXTI_LINE, DISABLE)
+#define key2_int_enable() key_exti_set(KEY2_INPUT_EXTI_LINE, ENABLE)
+#define key2_int_disable() key_exti_set(KEY2_INPUT_EXTI_LINE, DISABLE)
+
+GPIO_Module* const key_port[KEY_NUMBER] = {
+	GPIOB,GPIOB
+};
+const uint16_t key_pin[KEY_NUMBER] = {
+	GPIO_PIN_1,GPIO_PIN_2
+};
+const uint32_t key_exti_line[KEY_NUMBER] = {
+	KEY1_INPUT_EXTI_LINE,
+	KEY2_INPUT_EXTI_LINE
+};
+const uint16_t key_long_event[KEY_NUMBER] = {
+	UEVT_BTN1_LONG,
+	UEVT_BTN2_LONG
+};
+const uint16_t key_repeat_event[KEY_NUMBER] = {
+	UEVT_BTN1_REPEAT,
+	UEVT_BTN2_REPEAT
+};
+const uint16_t key_release_event[KEY_NUMBER] = {
+	UEVT_BTN1_RELEASE,
+	UEVT_BTN2_RELEASE
+};
+// TODO: button程序化初始化 使用button命名替换key命名
+bool is_button_release(GPIO_Module* GPIOx, uint16_t Pin)
+{
+	return GPIO_ReadInputDataBit(GPIOx,Pin) ? true : false;
+}
 
 void gpio_setup_out_pp(GPIO_Module* GPIOx, uint16_t Pin)
 {
@@ -267,7 +250,6 @@ void gpio_setup_out_pp(GPIO_Module* GPIOx, uint16_t Pin)
 	} else {
 		return;
 	}
-
 	if (Pin <= GPIO_PIN_ALL) {
 		GPIO_InitStruct(&GPIO_InitStructure);
 		GPIO_InitStructure.Pin = Pin;
@@ -294,47 +276,81 @@ void gpio_setup_in_pu(GPIO_Module* GPIOx, uint16_t Pin)
 	GPIO_InitStructure.GPIO_Pull = GPIO_PULL_UP;
 	GPIO_InitPeripheral(GPIOx, &GPIO_InitStructure);
 }
-void gpio_setup_int_falling(uint32_t exti_line, IRQn_Type irq_channel, void_handler_t handler)
+void gpio_setup_int_falling(uint8_t port_src, uint8_t pin_src, uint32_t exti_line, IRQn_Type irq_channel, void_handler_t handler)
 {
-    EXTI_InitType EXTI_InitStructure;
-    NVIC_InitType NVIC_InitStructure;
+	GPIO_ConfigEXTILine(port_src, pin_src);
 
-    /*Configure key EXTI line*/
-    EXTI_InitStructure.EXTI_Line    = exti_line;
-    EXTI_InitStructure.EXTI_Mode    = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_InitPeripheral(&EXTI_InitStructure);
-
-    /*Set key input interrupt priority*/
-    NVIC_InitStructure.NVIC_IRQChannel                   = irq_channel;
-    NVIC_InitStructure.NVIC_IRQChannelPriority           = 3;
-    NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
+	key_exti_set(exti_line, ENABLE);
+	nvic_set(irq_channel, 3, ENABLE);
 
     ModuleIrqRemoval(irq_channel);
     ModuleIrqRegister(irq_channel, handler);
 }
+
 static void key1_press(void){
-	static uint8_t key_down = 0x1;
-	EXTI_ClrITPendBit(KEY1_INPUT_EXTI_LINE);
-	platform_evt_put((const uevt_t*)&key_down, button_handler);
-	LOG_RAW("key1_press\r\n");
+	if ( EXTI_GetITStatus(KEY1_INPUT_EXTI_LINE)!= RESET) {
+		key1_int_disable();
+		EXTI_ClrITPendBit(KEY1_INPUT_EXTI_LINE);
+		uevt_bc_e(UEVT_BTN1_DOWN);
+	}
 }
 static void key2_press(void){
-	static uint8_t key_down = 0x2;
-	EXTI_ClrITPendBit(KEY2_INPUT_EXTI_LINE);
-	platform_evt_put((const uevt_t*)&key_down, button_handler);
-	LOG_RAW("key2_press\r\n");
+	if ( EXTI_GetITStatus(KEY2_INPUT_EXTI_LINE)!= RESET) {
+		key2_int_disable();
+		EXTI_ClrITPendBit(KEY2_INPUT_EXTI_LINE);
+		uevt_bc_e(UEVT_BTN2_DOWN);
+	}
 }
+
+static uint8_t button_current_valid = 0x00;
+static uint8_t button_press_time[KEY_NUMBER] = {0};
+void btn_on_uevt_handler(uevt_t* evt)
+{
+	switch(evt->evt_id) {
+		case UEVT_APP_SETUP:
+			button_setup();
+			break;
+		case UEVT_BTN1_DOWN:
+			button_current_valid |= 0x01;
+			break;
+		case UEVT_BTN2_DOWN:
+			button_current_valid |= 0x02;
+			break;
+		case UEVT_RTC_8HZ:
+			if(button_current_valid > 0) {
+				for (uint8_t i = 0; i < KEY_NUMBER; i++)
+				{
+					if(button_current_valid&(0x1<<i)){
+						button_press_time[i] += 1;
+						if(button_press_time[i] == 9){
+							uevt_bc_e(key_long_event[i]);
+						}
+						if(button_press_time[i] > 16){
+							button_press_time[i] = 16;
+							uevt_bc_e(key_repeat_event[i]);
+						}
+						if(is_button_release(key_port[i],key_pin[i])){
+							button_current_valid &= (0xFF^(0x01<<i));
+							button_press_time[i] = 0;
+							key_exti_set(key_exti_line[i], ENABLE);
+							uevt_bc_e(key_release_event[i]);
+						}
+					}
+				}
+			}
+			break;
+	}
+}
+
 static void button_setup(void)
 {
 	LOG_RAW("BTN SETUP\r\n");
 	gpio_setup_in_pu(KEY1);
-	gpio_setup_int_falling(KEY1_INPUT_EXTI_LINE, KEY1_INPUT_IRQn, key1_press);
+	gpio_setup_int_falling(KEY1_PORT_SOURCE,KEY1_PIN_SOURCE,KEY1_INPUT_EXTI_LINE, KEY1_INPUT_IRQn, key1_press);
 	gpio_setup_in_pu(KEY2);
-	gpio_setup_int_falling(KEY2_INPUT_EXTI_LINE, KEY2_INPUT_IRQn, key2_press);
+	gpio_setup_int_falling(KEY2_PORT_SOURCE,KEY2_PIN_SOURCE,KEY2_INPUT_EXTI_LINE, KEY2_INPUT_IRQn, key2_press);
 }
+
 void led1_on(void) { GPIO_SetBits(LED1); }
 void led1_off(void) { GPIO_ResetBits(LED1); }
 void led1_toggle(void) { GPIO_TogglePin(LED1); }
@@ -401,12 +417,13 @@ void shutdown_routine(void)
 
 void platform_scheduler(void)
 {
+	app_sched_execute();
+
 	// NOTE:BLE SWITCH
 	rwip_schedule();
 
-	app_sched_execute();
 	if(is_going_to_shutdown) {
 		shutdown_routine();
 	}
-	// ns_sleep();
+	ns_sleep();
 }
