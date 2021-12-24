@@ -61,9 +61,7 @@
 ### Env
 
 - React
-
 - yarn
-
 - vite
   - vite-plugin-windicss
   - vite-plugin-pwa
