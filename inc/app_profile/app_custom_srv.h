@@ -22,6 +22,7 @@
 
 #include "rwip_config.h"     // SW configuration
 #include "custom_srv.h"
+#include "platform.h"
 
 /// Manufacturer Name Value
 #define APP_CUSTOMS_16BIT_MANUFACTURER_NAME       ("CUST1_16")
@@ -63,8 +64,20 @@ void app_custom_srv_init(void);
  **/
 void app_custom_srv_add_profile(void);
 
-void custom_srv_send_notify(uint8_t* data, uint16_t length);
+void custom_srv_send_notify(const uint8_t* data, uint16_t length);
 
+typedef struct app_custom_srv_raw_data {
+	uint16_t length;
+	const uint8_t* data;
+} s_raw_data;
+
+#define UEVT_BLE_AIR_BASE (0x1100)
+#define UEVT_BLE_AIR_RAW_RECV (UEVT_BLE_AIR_BASE | 0x10)
+
+#define UEVT_BLE_AIR_CTL_RAW_SEND (UEVT_BLE_AIR_BASE | 0x90)
+
+void ble_air_on_uevt_handler(uevt_t* evt);
+void ble_air_init(void);
 
 /// @} APP
 

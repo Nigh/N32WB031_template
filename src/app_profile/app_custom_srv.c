@@ -24,12 +24,6 @@
 #include "app_task.h"
 
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private constants ---------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-
-
 struct attm_desc custom_srv_att_db[CUSTOM_SRV_IDX_NB] = {
 	/* Service Declaration */
 	[0] = {ATT_DECL_PRIMARY_SERVICE, PERM(RD, ENABLE),                                              0,                                          0       },
@@ -143,9 +137,9 @@ static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
 	NS_LOG_DEBUG("Func:[%s]\r\n\twrite handle = %x\r\n\tlength = %x\r\n\t", __func__, ind_value->handle, ind_value->length);
 
 	for(uint16_t i = 0; i < ind_value->length; i++) {
-		NS_LOG_INFO("%x ", ind_value->value[i]);
+		NS_LOG_DEBUG("%x ", ind_value->value[i]);
 	}
-	NS_LOG_INFO("\r\n");
+	NS_LOG_DEBUG("\r\n");
 
 	uint16_t handle = ind_value->handle;
 	uint16_t length = ind_value->length;
@@ -168,6 +162,10 @@ static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
 		case CUSTOM_SRV_IDX_WRITE_VAL:
 			NS_LOG_DEBUG("CUSTOM_SRV_IDX_WRITE_VAL\r\n");
 			// TODO: Receive
+			static s_raw_data raw;
+			raw.data = ind_value->value;
+			raw.length = ind_value->length;
+			uevt_bc(UEVT_BLE_AIR_RAW_RECV, &raw);
 			// app_usart_tx_fifo_enter(ind_value->value, ind_value->length);
 			break;
 		default:
@@ -200,7 +198,7 @@ static int custom_srv_val_ntf_cfm_handler(ke_msg_id_t const msgid,
  * @return
  * @note
  */
-void custom_srv_send_notify(uint8_t* data, uint16_t length)
+void custom_srv_send_notify(const uint8_t* data, uint16_t length)
 {
 	struct custom_srv_val_ntf_ind_req* req = KE_MSG_ALLOC_DYN(CUSTOMS_16BIT_VAL_NTF_REQ,
 	        prf_get_task_from_id(TASK_ID_CUSTOM_SRV),
@@ -228,3 +226,20 @@ const struct ke_msg_handler app_custom_srv_msg_handler_list[] = {
 
 const struct app_subtask_handlers app_custom_srv_handlers = APP_HANDLERS(app_custom_srv);
 
+void ble_air_on_uevt_handler(uevt_t* evt)
+{
+	switch(evt->evt_id) {
+		case UEVT_APP_SETUP:
+			break;
+		case UEVT_BLE_AIR_CTL_RAW_SEND: {
+			static s_raw_data* raw;
+			raw = (s_raw_data*)(evt->content);
+			custom_srv_send_notify(raw->data, raw->length);
+		}
+		break;
+	}
+}
+void ble_air_init(void)
+{
+	user_event_handler_regist(ble_air_on_uevt_handler);
+}

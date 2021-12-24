@@ -16,6 +16,7 @@ typedef void (*fpevt_h)(uevt_t*);
 
 #include "platform.h"
 
+void user_event_send(uevt_t evt, fpevt_h event_handler);
 void user_event_broadcast(uevt_t evt);
 void user_event_init(void);
 void user_event_handler_regist(fpevt_h func);

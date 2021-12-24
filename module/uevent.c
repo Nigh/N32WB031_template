@@ -15,6 +15,10 @@ __WEAK void user_event_handler(uevt_t* evt)
 	user_event_array_dispatcher(*evt);
 }
 
+void user_event_send(uevt_t evt, fpevt_h event_handler)
+{
+	platform_evt_put(&evt, event_handler);
+}
 void user_event_broadcast(uevt_t evt)
 {
 	platform_evt_put(&evt, user_event_handler);

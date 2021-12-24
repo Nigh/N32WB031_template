@@ -30,6 +30,7 @@ void LOG_HEX_RAW_IMP(uint8_t* array, uint16_t length);
 
 void btn_to_start_up(void);
 void button_init(void);
+void led_init(void);
 void platform_init(void);
 void platform_scheduler(void);
 void platform_wakeup(void);
@@ -40,8 +41,6 @@ void led1_toggle(void);
 void led2_on(void);
 void led2_off(void);
 void led2_toggle(void);
-
-void btn_on_uevt_handler(uevt_t* evt);
 
 #define UEVT_APP_BASE (0xAE00)
 // 上电信号
@@ -54,9 +53,10 @@ void btn_on_uevt_handler(uevt_t* evt);
 #define UEVT_APP_BEFORE_SLEEP (UEVT_APP_BASE|0x0E)
 
 #define UEVT_RTC_BASE (0x0000)
-#define UEVT_RTC_8HZ (0x0001)
-#define UEVT_RTC_1HZ (0x0002)
-#define UEVT_RTC_NEWDAY (0x0003)
+#define UEVT_RTC_16HZ (UEVT_RTC_BASE | 0x01)
+#define UEVT_RTC_8HZ (UEVT_RTC_BASE | 0x02)
+#define UEVT_RTC_1HZ (UEVT_RTC_BASE | 0x03)
+#define UEVT_RTC_NEWDAY (UEVT_RTC_BASE | 0x04)
 
 #define UEVT_BTN_BASE (0x0100)
 #define UEVT_BTN1_DOWN (UEVT_BTN_BASE|0x01)
@@ -67,6 +67,12 @@ void btn_on_uevt_handler(uevt_t* evt);
 #define UEVT_BTN2_RELEASE (UEVT_BTN_BASE|0x12)
 #define UEVT_BTN2_LONG (UEVT_BTN_BASE|0x13)
 #define UEVT_BTN2_REPEAT (UEVT_BTN_BASE|0x14)
+
+#define UEVT_LED_BASE (0x0200)
+#define UEVT_LED1_ON (UEVT_LED_BASE|0x11)
+#define UEVT_LED1_OFF (UEVT_LED_BASE|0x10)
+#define UEVT_LED2_ON (UEVT_LED_BASE|0x21)
+#define UEVT_LED2_OFF (UEVT_LED_BASE|0x20)
 
 #define UEVT_DTIME_BASE (0x0500)
 #define UEVT_DTIME_UPDATE (UEVT_DTIME_BASE|0x01)

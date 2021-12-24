@@ -30,13 +30,17 @@ void LOG_HEX_RAW_IMP(uint8_t* array, uint16_t length)
 		}
 		length -= len;
 		*pb = 0;
-		LOG_RAW("%s\n", buffer);
+		LOG_RAW("%s\r\n", buffer);
 	}
 }
 
+__WEAK void rtc_16hz_isr(uint8_t tick)
+{
+	LOG_RAW("(WEAK HANDLER)isr16 - %d\r\n", tick);
+}
 __WEAK void rtc_8hz_isr(uint8_t tick)
 {
-	LOG_RAW("(WEAK HANDLER)isr - %d\r\n", tick);
+	LOG_RAW("(WEAK HANDLER)isr8 - %d\r\n", tick);
 }
 __WEAK void rtc_1hz_handler(void)
 {
@@ -47,10 +51,11 @@ __WEAK void rtc_1hz_handler(void)
 static void rtc_handler(void)
 {
 	static unsigned char tick = 0;
-	rtc_8hz_isr(tick);
+	// rtc_8hz_isr(tick);
+	rtc_16hz_isr(tick);
 	tick += 1;
-	if(tick & 0x8) {
-		tick &= 0x7;
+	if(tick & 0x10) {
+		tick &= 0xF;
 		platform_simple_evt_put(rtc_1hz_handler);
 	}
 }
@@ -140,7 +145,7 @@ static void rtc_setup(void)
     RTC_PrescalerConfig();
 	RTC_ConfigWakeUpClock(RTC_WKUPCLK_RTCCLK_DIV16);
     RTC_EnableWakeUp(DISABLE);
-    RTC_SetWakeUpCounter(0x100);
+    RTC_SetWakeUpCounter(0x80);
 
     RTC_EXTI9_WKUP_Configuration();
 	NVIC_RTC_WKUP_IRQ_Config();
@@ -161,11 +166,6 @@ void rtc_init(void)
 	user_event_handler_regist(rtc_on_uevt_handler);
 }
 
-
-void button_init(void)
-{
-	user_event_handler_regist(btn_on_uevt_handler);
-}
 
 #define LED1 GPIOB,GPIO_PIN_0
 #define LED2 GPIOA,GPIO_PIN_6
@@ -342,6 +342,11 @@ void btn_on_uevt_handler(uevt_t* evt)
 	}
 }
 
+void button_init(void)
+{
+	user_event_handler_regist(btn_on_uevt_handler);
+}
+
 static void button_setup(void)
 {
 	LOG_RAW("BTN SETUP\r\n");
@@ -362,6 +367,32 @@ static void leds_setup(void)
 	gpio_setup_out_pp(LED1);
 	gpio_setup_out_pp(LED2);
 }
+void led_on_uevt_handler(uevt_t* evt)
+{
+	switch(evt->evt_id) {
+		case UEVT_APP_SETUP:
+			leds_setup();
+			break;
+		case UEVT_LED1_ON:
+			led1_on();
+			break;
+		case UEVT_LED1_OFF:
+			led1_off();
+			break;
+		case UEVT_LED2_ON:
+			led2_on();
+			break;
+		case UEVT_LED2_OFF:
+			led2_off();
+			break;
+	}
+}
+
+void led_init(void)
+{
+	user_event_handler_regist(led_on_uevt_handler);
+}
+
 void platform_wakeup(void)
 {
 	RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_GPIOA | RCC_APB2_PERIPH_GPIOB | RCC_APB2_PERIPH_AFIO, ENABLE);
@@ -399,7 +430,6 @@ void platform_init(void)
 
 void platform_reboot(void)
 {
-	// TODO:
 }
 
 bool is_going_to_shutdown = false;
@@ -410,7 +440,6 @@ void platform_powerdown(bool flag)
 
 void shutdown_routine(void)
 {
-	// TODO:
 	// nrf_pwr_mgmt_shutdown(NRF_PWR_MGMT_SHUTDOWN_GOTO_SYSOFF);
 	while(1);
 }
@@ -425,5 +454,5 @@ void platform_scheduler(void)
 	if(is_going_to_shutdown) {
 		shutdown_routine();
 	}
-	ns_sleep();
+	// ns_sleep();
 }
