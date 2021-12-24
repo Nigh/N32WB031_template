@@ -1,0 +1,60 @@
+
+img.evb-bg{
+	position: relative;
+	left: 0;
+	top: 0;
+}
+
+img.btn-rst{
+	position: absolute;
+	width: 5.44%;
+	left: 15.82%;
+	top: 7.77%;
+	/* left: 134px;
+	top: 98px; */
+}
+
+img.btn-wup{
+	position: absolute;
+	width: 5.44%;
+	left: 15.82%;
+	top: 17.6%;
+	/* left: 134px;
+	top: 222px; */
+}
+
+img.btn2{
+	position: absolute;
+	width: 5.44%;
+	left: 81.94%;
+	top: 7.77%;
+	/* left: 694px;
+	top: 98px; */
+}
+
+img.btn1{
+	position: absolute;
+	width: 5.44%;
+	left: 81.94%;
+	top: 17.6%;
+	/* left: 694px;
+	top: 222px; */
+}
+
+img.led2{
+	position: absolute;
+	left: 20.5%;
+	top: 29.18%;
+	width: 12.16%;
+	/* left: 174px;
+	top: 368px; */
+}
+
+img.led1{
+	position: absolute;
+	left: 20.5%;
+	top: 31.88%;
+	width: 12.16%;
+	/* left: 174px;
+	top: 402px; */
+}

@@ -1,3 +1,4 @@
+# for firmware
 bin
 Listings
 Objects
@@ -6,3 +7,10 @@ JLinkLog*
 JLinkSettings*
 *.uvguix*
 *.uvoptx
+
+# for web ble
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
