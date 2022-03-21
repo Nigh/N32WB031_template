@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>N32WB03X, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\inc;..\module;G:\_business\_n32wb_SDK\v110\firmware\CMSIS\core;G:\_business\_n32wb_SDK\v110\firmware\CMSIS\device;G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\inc;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\hogp;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\hogp\hogpd\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\hogp\hogpd\src;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ahi\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gap;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gatt;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\l2c;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llc;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\lld;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llm;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\em\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\hci\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\sch\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\aes\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\dbg\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ecc_p256\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\h4tl\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ke\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\rfinit\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\arch;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\src;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common;..\inc\rw;..\inc\app_profile;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\arch;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\adv;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\timer;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\log;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\delay;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\sleep;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\sec;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\ble;G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src</IncludePath>
+              <IncludePath>..\inc;..\module;$(SDK_PATH)\firmware\CMSIS\core;$(SDK_PATH)\firmware\CMSIS\device;$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\inc;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\hogp;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\hogp\hogpd\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\hogp\hogpd\src;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ahi\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\inc;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gap;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\gatt;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\l2c;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llc;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\lld;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\ll\src\llm;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\em\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\hci\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\sch\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\aes\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\dbg\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ecc_p256\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\h4tl\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\ke\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\rwip\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\rfinit\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\arch;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\api;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\modules\common\src;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common;..\inc\rw;..\inc\app_profile;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\arch;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\adv;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\timer;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\log;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\delay;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\sleep;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\sec;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\ble;$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -373,7 +373,7 @@
             <ScatterFile></ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\symdef\symbol_g15.obj</Misc>
+            <Misc>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\symdef\symbol_g15.obj</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -386,7 +386,7 @@
             <File>
               <FileName>startup_n32wb03x.s</FileName>
               <FileType>2</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\CMSIS\device\startup\startup_n32wb03x.s</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\CMSIS\device\startup\startup_n32wb03x.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -396,7 +396,7 @@
             <File>
               <FileName>system_n32wb03x.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\CMSIS\device\system_n32wb03x.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\CMSIS\device\system_n32wb03x.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -475,62 +475,62 @@
             <File>
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\misc.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\misc.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_adc.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_adc.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_crc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_crc.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_crc.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_dma.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_dma.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_dma.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_exti.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_exti.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_exti.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_gpio.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_gpio.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_rcc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rcc.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rcc.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_tim.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_tim.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_tim.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_usart.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_usart.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_spi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_spi.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_spi.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_qflash.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_qflash.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_qflash.c</FilePath>
             </File>
             <File>
               <FileName>n32wb03x_rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rtc.c</FilePath>
+              <FilePath>$(SDK_PATH)\firmware\n32wb03x_std_periph_driver\src\n32wb03x_rtc.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -540,17 +540,17 @@
             <File>
               <FileName>lib_att.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\att\lib_att.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\ip\ble\hl\src\att\lib_att.c</FilePath>
             </File>
             <File>
               <FileName>rwip.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common\rwip.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common\rwip.c</FilePath>
             </File>
             <File>
               <FileName>rwip_driver.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common\rwip_driver.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_stack\stack_common\rwip_driver.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -560,52 +560,52 @@
             <File>
               <FileName>prf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\prf.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\prf.c</FilePath>
             </File>
             <File>
               <FileName>prf_utils.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\prf_utils.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\prf_utils.c</FilePath>
             </File>
             <File>
               <FileName>diss.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\src\diss.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\src\diss.c</FilePath>
             </File>
             <File>
               <FileName>diss_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\src\diss_task.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\dis\diss\src\diss_task.c</FilePath>
             </File>
             <File>
               <FileName>bass.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass.c</FilePath>
             </File>
             <File>
               <FileName>bass_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\bas\bass\src\bass_task.c</FilePath>
             </File>
             <File>
               <FileName>rdtss.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss.c</FilePath>
             </File>
             <File>
               <FileName>rdtss_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_task.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_task.c</FilePath>
             </File>
             <File>
               <FileName>rdts_common.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdts_common.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdts_common.c</FilePath>
             </File>
             <File>
               <FileName>ns_iuss.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\ns_ius\ns_iuss\src\ns_iuss.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\ns_ius\ns_iuss\src\ns_iuss.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -661,7 +661,7 @@
             <File>
               <FileName>ns_iuss_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\ns_ius\ns_iuss\src\ns_iuss_task.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\ns_ius\ns_iuss\src\ns_iuss_task.c</FilePath>
               <FileOption>
                 <CommonProperty>
                   <UseCPPCompiler>2</UseCPPCompiler>
@@ -717,12 +717,12 @@
             <File>
               <FileName>rdtss_16bit.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit.c</FilePath>
             </File>
             <File>
               <FileName>rdtss_16bit_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit_task.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_ble_profile\rdts\rdtss\src\rdtss_16bit_task.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -816,12 +816,12 @@
             <File>
               <FileName>ns_dfu_ble.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\dfu\ns_dfu_ble.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\dfu\ns_dfu_ble.c</FilePath>
             </File>
             <File>
               <FileName>ns_dfu_boot.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\dfu\ns_dfu_boot.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\dfu\ns_dfu_boot.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -900,17 +900,17 @@
             <File>
               <FileName>ns_ecc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\ecc\ns_ecc.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\ecc\ns_ecc.c</FilePath>
             </File>
             <File>
               <FileName>sha256.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\ecc\sha256.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\ecc\sha256.c</FilePath>
             </File>
             <File>
               <FileName>uECC.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\ecc\uECC.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\ecc\uECC.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -920,37 +920,37 @@
             <File>
               <FileName>ns_sleep.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\sleep\ns_sleep.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\sleep\ns_sleep.c</FilePath>
             </File>
             <File>
               <FileName>ns_log_usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\log\ns_log_usart.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\log\ns_log_usart.c</FilePath>
             </File>
             <File>
               <FileName>ns_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\error\ns_error.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\error\ns_error.c</FilePath>
             </File>
             <File>
               <FileName>ns_timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\timer\ns_timer.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\timer\ns_timer.c</FilePath>
             </File>
             <File>
               <FileName>ns_sec.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\sec\ns_sec.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\sec\ns_sec.c</FilePath>
             </File>
             <File>
               <FileName>ns_ble.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\ble\ns_ble.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\ble\ns_ble.c</FilePath>
             </File>
             <File>
               <FileName>ns_ble_task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>G:\_business\_n32wb_SDK\v110\middlewares\Nationstech\ble_library\ns_library\ble\ns_ble_task.c</FilePath>
+              <FilePath>$(SDK_PATH)\middlewares\Nationstech\ble_library\ns_library\ble\ns_ble_task.c</FilePath>
             </File>
           </Files>
         </Group>
