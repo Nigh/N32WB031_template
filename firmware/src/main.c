@@ -40,12 +40,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "n32wb03x.h"
 #include "ble_stack_common.h"
-#include "app.h"
 #include "prf.h"
+#include "app_ble.h"
 #include "ns_delay.h"
 #include "platform.h"
 
-#if  (CFG_APP_NS_IUS)
+#if (CFG_APP_NS_IUS)
 	#include "ns_dfu_boot.h"
 #endif
 
@@ -66,7 +66,7 @@ void main_handler(uevt_t* evt)
 		case UEVT_APP_SETUP:
 			LOG_RAW("UEVT_APP_SETUP\r\n");
 			// NOTE:BLE SWITCH
-			app_init();
+			app_ble_init();
 			prf_init(RWIP_INIT);
 
 			uevt_bc_e(UEVT_APP_START);
@@ -216,7 +216,7 @@ void rtc_16hz_isr(void)
 {
 	static bool v = true;
 	uevt_bc_e(UEVT_RTC_16HZ);
-	if(v = !v) {
+	if((v = !v) == true) {
 		uevt_bc_e(UEVT_RTC_8HZ);
 	}
 }
@@ -243,13 +243,6 @@ int main(void)
 	// NOTE:BLE SWITCH
 	NS_BLE_STACK_INIT();
 
-#if (CFG_APP_NS_IUS)
-	if(CURRENT_APP_START_ADDRESS == NS_APP1_START_ADDRESS) {
-		LOG_RAW("application 1 start new ...\r\n");
-	} else if(CURRENT_APP_START_ADDRESS == NS_APP2_START_ADDRESS) {
-		LOG_RAW("application 2 start new ...\r\n");
-	}
-#endif
 #if NS_LOG_ENABLED==1
 	LOG_INIT();
 	LOG_RAW("\r\n\n\n\n\nLOG INIT Succeed\r\n");
@@ -287,26 +280,6 @@ void app_sleep_resume_proc(void)
 	// LOG_RAW("WAKE\r\n");
 	// TODO: reinit GPIO
 	platform_wakeup();
-}
-
-/**
- * @brief  ble connected
- * @param
- * @return
- * @note
- */
-void app_ble_connected(void)
-{
-}
-
-/**
- * @brief  ble disconnected
- * @param
- * @return
- * @note
- */
-void app_ble_disconnected(void)
-{
 }
 
 /**

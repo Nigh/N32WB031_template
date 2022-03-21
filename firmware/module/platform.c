@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "ns_log.h"
 #include "ns_sleep.h"
+#include "ns_delay.h"
 #include "scheduler.h"
 
 #include "n32wb03x.h"
@@ -69,88 +70,87 @@ uint32_t SynchPrediv, AsynchPrediv;
 #define VRTC_AsynchPrediv (0x7F)
 void RTC_EXTI9_WKUP_Configuration(void)
 {
-    EXTI_InitType EXTI_InitStructure;
+	EXTI_InitType EXTI_InitStructure;
 
-    EXTI_ClrITPendBit(EXTI_LINE9);
-    EXTI_InitStructure.EXTI_Line = EXTI_LINE9;
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
-    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_InitPeripheral(&EXTI_InitStructure);
+	EXTI_ClrITPendBit(EXTI_LINE9);
+	EXTI_InitStructure.EXTI_Line = EXTI_LINE9;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_InitPeripheral(&EXTI_InitStructure);
 
 }
 
 static void RTC_IRQHandler(void);
 void NVIC_RTC_WKUP_IRQ_Config(void)
 {
-    NVIC_InitType NVIC_InitStructure;
+	NVIC_InitType NVIC_InitStructure;
 
-    /* Enable the RTC WakeUp Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPriority = 2;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-    ModuleIrqRemoval(RTC_IRQn);
-    ModuleIrqRegister(RTC_IRQn, RTC_IRQHandler);
+	/* Enable the RTC WakeUp Interrupt */
+	NVIC_InitStructure.NVIC_IRQChannel = RTC_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPriority = 2;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+	ModuleIrqRemoval(RTC_IRQn);
+	ModuleIrqRegister(RTC_IRQn, RTC_IRQHandler);
 }
 
 static void RTC_PrescalerConfig(void)
 {
 	RTC_InitType RTC_InitStructure;
-    /* Configure the RTC data register and RTC prescaler */
-    RTC_InitStructure.RTC_AsynchPrediv = VRTC_AsynchPrediv;
-    RTC_InitStructure.RTC_SynchPrediv  = VRTC_SynchPrediv;
-    RTC_InitStructure.RTC_HourFormat   = RTC_24HOUR_FORMAT;
-    if (RTC_Init(&RTC_InitStructure) == ERROR)
-    {
-        LOG_RAW("\r\n//******* RTC Prescaler Config failed **********//\r\n");
-    }
+	/* Configure the RTC data register and RTC prescaler */
+	RTC_InitStructure.RTC_AsynchPrediv = VRTC_AsynchPrediv;
+	RTC_InitStructure.RTC_SynchPrediv  = VRTC_SynchPrediv;
+	RTC_InitStructure.RTC_HourFormat   = RTC_24HOUR_FORMAT;
+	if (RTC_Init(&RTC_InitStructure) == ERROR) {
+		LOG_RAW("\r\n//******* RTC Prescaler Config failed **********//\r\n");
+	}
 }
 
 void RTC_CLKSourceConfig(void)
 {
-    /* Enable the PWR clock */
-    RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_PWR, ENABLE);
-    RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_AFIO, ENABLE);
+	/* Enable the PWR clock */
+	RCC_EnableAPB1PeriphClk(RCC_APB1_PERIPH_PWR, ENABLE);
+	RCC_EnableAPB2PeriphClk(RCC_APB2_PERIPH_AFIO, ENABLE);
 
-    /* Disable RTC clock */
-    RCC_EnableRtcClk(DISABLE);
+	/* Disable RTC clock */
+	RCC_EnableRtcClk(DISABLE);
 
-    LOG_RAW("RTC_ClkSrc Set LSE! \r\n");
-    RCC_ConfigLse(RCC_LSE_ENABLE);
-    while (RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET) { }
-    
-    RCC_ConfigLSXSEL(RCC_RTCCLK_SRC_LSE);
-    RCC_EnableLsi(DISABLE);
+	LOG_RAW("RTC_ClkSrc Set LSE! \r\n");
+	RCC_ConfigLse(RCC_LSE_ENABLE);
+	while (RCC_GetFlagStatus(RCC_LSCTRL_FLAG_LSERD) == RESET) { }
 
-    /* Enable the RTC Clock */
-    RCC_EnableRtcClk(ENABLE);
-    RTC_WaitForSynchro();
-    LOG_RAW("RTC_ClkSrc Set LSE DONE! \r\n");
+	RCC_ConfigLSXSEL(RCC_RTCCLK_SRC_LSE);
+	RCC_EnableLsi(DISABLE);
+
+	/* Enable the RTC Clock */
+	RCC_EnableRtcClk(ENABLE);
+	RTC_WaitForSynchro();
+	LOG_RAW("RTC_ClkSrc Set LSE DONE! \r\n");
 }
 
 static void RTC_IRQHandler(void)
 {
-    if (RTC_GetITStatus(RTC_INT_WUT) != RESET) {
-        RTC_ClrIntPendingBit(RTC_INT_WUT);
-        EXTI_ClrITPendBit(EXTI_LINE9);
+	if (RTC_GetITStatus(RTC_INT_WUT) != RESET) {
+		RTC_ClrIntPendingBit(RTC_INT_WUT);
+		EXTI_ClrITPendBit(EXTI_LINE9);
 		rtc_handler();
-    }
+	}
 }
 
 static void rtc_setup(void)
 {
 	LOG_RAW("RTC SETUP\r\n");
 	RTC_CLKSourceConfig();
-    RTC_PrescalerConfig();
+	RTC_PrescalerConfig();
 	RTC_ConfigWakeUpClock(RTC_WKUPCLK_RTCCLK_DIV16);
-    RTC_EnableWakeUp(DISABLE);
-    RTC_SetWakeUpCounter(0x80);
+	RTC_EnableWakeUp(DISABLE);
+	RTC_SetWakeUpCounter(0x80);
 
-    RTC_EXTI9_WKUP_Configuration();
+	RTC_EXTI9_WKUP_Configuration();
 	NVIC_RTC_WKUP_IRQ_Config();
-    RTC_EnableWakeUp(ENABLE);
-    RTC_ConfigInt(RTC_INT_WUT, ENABLE);
+	RTC_EnableWakeUp(ENABLE);
+	RTC_ConfigInt(RTC_INT_WUT, ENABLE);
 	LOG_RAW("RTC SETUP DONE\r\n");
 }
 void rtc_on_uevt_handler(uevt_t* evt)
@@ -190,19 +190,19 @@ void rtc_init(void)
 static void nvic_set(IRQn_Type irq_channel, uint8_t priority, FunctionalState en)
 {
 	NVIC_InitType NVIC_InitStructure;
-    NVIC_InitStructure.NVIC_IRQChannel                   = irq_channel;
-    NVIC_InitStructure.NVIC_IRQChannelPriority           = priority;
-    NVIC_InitStructure.NVIC_IRQChannelCmd                = en;
-    NVIC_Init(&NVIC_InitStructure);
+	NVIC_InitStructure.NVIC_IRQChannel                   = irq_channel;
+	NVIC_InitStructure.NVIC_IRQChannelPriority           = priority;
+	NVIC_InitStructure.NVIC_IRQChannelCmd                = en;
+	NVIC_Init(&NVIC_InitStructure);
 }
 static void key_exti_set(uint32_t exti_line, FunctionalState en)
 {
 	EXTI_InitType EXTI_InitStructure;
-    EXTI_InitStructure.EXTI_Line    = exti_line;
-    EXTI_InitStructure.EXTI_Mode    = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-    EXTI_InitStructure.EXTI_LineCmd = en;
-    EXTI_InitPeripheral(&EXTI_InitStructure);
+	EXTI_InitStructure.EXTI_Line    = exti_line;
+	EXTI_InitStructure.EXTI_Mode    = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = en;
+	EXTI_InitPeripheral(&EXTI_InitStructure);
 }
 
 #define key1_int_enable() key_exti_set(KEY1_INPUT_EXTI_LINE, ENABLE)
@@ -211,10 +211,10 @@ static void key_exti_set(uint32_t exti_line, FunctionalState en)
 #define key2_int_disable() key_exti_set(KEY2_INPUT_EXTI_LINE, DISABLE)
 
 GPIO_Module* const key_port[KEY_NUMBER] = {
-	GPIOB,GPIOB
+	GPIOB, GPIOB
 };
 const uint16_t key_pin[KEY_NUMBER] = {
-	GPIO_PIN_1,GPIO_PIN_2
+	GPIO_PIN_1, GPIO_PIN_2
 };
 const uint32_t key_exti_line[KEY_NUMBER] = {
 	KEY1_INPUT_EXTI_LINE,
@@ -235,7 +235,7 @@ const uint16_t key_release_event[KEY_NUMBER] = {
 // TODO: button程序化初始化 使用button命名替换key命名
 bool is_button_release(GPIO_Module* GPIOx, uint16_t Pin)
 {
-	return GPIO_ReadInputDataBit(GPIOx,Pin) ? true : false;
+	return GPIO_ReadInputDataBit(GPIOx, Pin) ? true : false;
 }
 
 void gpio_setup_out_pp(GPIO_Module* GPIOx, uint16_t Pin)
@@ -283,19 +283,21 @@ void gpio_setup_int_falling(uint8_t port_src, uint8_t pin_src, uint32_t exti_lin
 	key_exti_set(exti_line, ENABLE);
 	nvic_set(irq_channel, 3, ENABLE);
 
-    ModuleIrqRemoval(irq_channel);
-    ModuleIrqRegister(irq_channel, handler);
+	ModuleIrqRemoval(irq_channel);
+	ModuleIrqRegister(irq_channel, handler);
 }
 
-static void key1_press(void){
-	if ( EXTI_GetITStatus(KEY1_INPUT_EXTI_LINE)!= RESET) {
+static void key1_press(void)
+{
+	if ( EXTI_GetITStatus(KEY1_INPUT_EXTI_LINE) != RESET) {
 		key1_int_disable();
 		EXTI_ClrITPendBit(KEY1_INPUT_EXTI_LINE);
 		uevt_bc_e(UEVT_BTN1_DOWN);
 	}
 }
-static void key2_press(void){
-	if ( EXTI_GetITStatus(KEY2_INPUT_EXTI_LINE)!= RESET) {
+static void key2_press(void)
+{
+	if ( EXTI_GetITStatus(KEY2_INPUT_EXTI_LINE) != RESET) {
 		key2_int_disable();
 		EXTI_ClrITPendBit(KEY2_INPUT_EXTI_LINE);
 		uevt_bc_e(UEVT_BTN2_DOWN);
@@ -318,19 +320,18 @@ void btn_on_uevt_handler(uevt_t* evt)
 			break;
 		case UEVT_RTC_8HZ:
 			if(button_current_valid > 0) {
-				for (uint8_t i = 0; i < KEY_NUMBER; i++)
-				{
-					if(button_current_valid&(0x1<<i)){
+				for (uint8_t i = 0; i < KEY_NUMBER; i++) {
+					if(button_current_valid & (0x1 << i)) {
 						button_press_time[i] += 1;
-						if(button_press_time[i] == 9){
+						if(button_press_time[i] == 9) {
 							uevt_bc_e(key_long_event[i]);
 						}
-						if(button_press_time[i] > 16){
+						if(button_press_time[i] > 16) {
 							button_press_time[i] = 16;
 							uevt_bc_e(key_repeat_event[i]);
 						}
-						if(is_button_release(key_port[i],key_pin[i])){
-							button_current_valid &= (0xFF^(0x01<<i));
+						if(is_button_release(key_port[i], key_pin[i])) {
+							button_current_valid &= (0xFF ^ (0x01 << i));
 							button_press_time[i] = 0;
 							key_exti_set(key_exti_line[i], ENABLE);
 							uevt_bc_e(key_release_event[i]);
@@ -351,17 +352,35 @@ static void button_setup(void)
 {
 	LOG_RAW("BTN SETUP\r\n");
 	gpio_setup_in_pu(KEY1);
-	gpio_setup_int_falling(KEY1_PORT_SOURCE,KEY1_PIN_SOURCE,KEY1_INPUT_EXTI_LINE, KEY1_INPUT_IRQn, key1_press);
+	gpio_setup_int_falling(KEY1_PORT_SOURCE, KEY1_PIN_SOURCE, KEY1_INPUT_EXTI_LINE, KEY1_INPUT_IRQn, key1_press);
 	gpio_setup_in_pu(KEY2);
-	gpio_setup_int_falling(KEY2_PORT_SOURCE,KEY2_PIN_SOURCE,KEY2_INPUT_EXTI_LINE, KEY2_INPUT_IRQn, key2_press);
+	gpio_setup_int_falling(KEY2_PORT_SOURCE, KEY2_PIN_SOURCE, KEY2_INPUT_EXTI_LINE, KEY2_INPUT_IRQn, key2_press);
 }
 
-void led1_on(void) { GPIO_SetBits(LED1); }
-void led1_off(void) { GPIO_ResetBits(LED1); }
-void led1_toggle(void) { GPIO_TogglePin(LED1); }
-void led2_on(void) { GPIO_SetBits(LED2); }
-void led2_off(void) { GPIO_ResetBits(LED2); }
-void led2_toggle(void) { GPIO_TogglePin(LED2); }
+void led1_on(void)
+{
+	GPIO_SetBits(LED1);
+}
+void led1_off(void)
+{
+	GPIO_ResetBits(LED1);
+}
+void led1_toggle(void)
+{
+	GPIO_TogglePin(LED1);
+}
+void led2_on(void)
+{
+	GPIO_SetBits(LED2);
+}
+void led2_off(void)
+{
+	GPIO_ResetBits(LED2);
+}
+void led2_toggle(void)
+{
+	GPIO_TogglePin(LED2);
+}
 static void leds_setup(void)
 {
 	gpio_setup_out_pp(LED1);
@@ -407,7 +426,7 @@ void btn_to_start_up(void)
 	gpio_setup_in_pu(KEY2);
 	gpio_setup_out_pp(LED1);
 	gpio_setup_out_pp(LED2);
-	
+
 	while(1) {
 		if((GPIO_ReadInputDataBit(KEY1) == 0) || (GPIO_ReadInputDataBit(KEY2) == 0)) {
 			break;

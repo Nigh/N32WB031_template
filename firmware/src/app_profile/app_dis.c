@@ -26,9 +26,9 @@
  * ****************************************************************************/
 
 /**
- * @file app.dis.c
+ * @file app_dis.c
  * @author Nations Firmware Team
- * @version v1.0.0
+ * @version v1.0.1
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
@@ -36,24 +36,21 @@
 /**
  * @addtogroup APP
  * @{
- */
+ **/
 
 #include "rwip_config.h"     // SW configuration
 
 #if (BLE_APP_DIS)
 /* Includes ------------------------------------------------------------------*/
-#include "app.h"                     // Application Manager Definitions
+#include "ns_ble.h"                     // Application Manager Definitions
 #include "app_dis.h"                 // Device Information Service Application Definitions
 #include "diss_task.h"               // Device Information Profile Functions
 #include "prf_types.h"               // Profile Common Types Definitions
 #include "ke_task.h"                 // Kernel
 #include "gapm_task.h"               // GAP Manager Task API
-#include <string.h>
-#include "co_utils.h"
-
 #include "diss.h"
-
-#include "stdio.h"
+#include <string.h>
+#include <stdio.h>
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
@@ -176,7 +173,17 @@ static int diss_value_req_ind_handler(ke_msg_id_t const msgid,
  */
 void app_dis_init(void)
 {
-	// Nothing to do
+	//register application subtask to app task
+	struct prf_task_t prf;
+	prf.prf_task_id = TASK_ID_DISS;
+	prf.prf_task_handler = &app_dis_handlers;
+	ns_ble_prf_task_register(&prf);
+
+	//register get itf function to prf.c
+	struct prf_get_func_t get_func;
+	get_func.task_id = TASK_ID_DISS;
+	get_func.prf_itf_get_func = diss_prf_itf_get;
+	prf_get_itf_func_register(&get_func);
 }
 
 /**
@@ -194,8 +201,7 @@ void app_dis_add_dis(void)
 	                                        gapm_profile_task_add_cmd, sizeof(struct diss_db_cfg));
 	// Fill message
 	req->operation = GAPM_PROFILE_TASK_ADD;
-	req->sec_lvl =  PERM(SVC_AUTH, NO_AUTH); //PERM(SVC_AUTH, AUTH);
-
+	req->sec_lvl =  PERM(SVC_AUTH, NO_AUTH);
 	req->prf_task_id = TASK_ID_DISS;
 	req->app_task = TASK_APP;
 	req->start_hdl = 0;
@@ -206,6 +212,8 @@ void app_dis_add_dis(void)
 
 	// Send the message
 	ke_msg_send(req);
+
+	app_dis_init();
 }
 
 /* Public variables ---------------------------------------------------------*/

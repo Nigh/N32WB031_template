@@ -28,7 +28,7 @@
 /**
  * @file app_user_config.h
  * @author Nations Firmware Team
- * @version v1.0.0
+ * @version v1.0.1
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
@@ -39,9 +39,7 @@
 #include "ns_adv_data_def.h"
 
 /* Device name */
-#define CUSTOM_DEVICE_NAME                  "N32WB_TEST"
-#define CUSTOM_BLE_MAC_ADDRESS              "\x08\x02\x03\x04\x05\x06"
-
+#define CUSTOM_DEVICE_NAME                  "N32WB_TESTv110"
 
 /* adv configer*/
 #define CUSTOM_ADV_FAST_INTERVAL               160                                     /**< Fast advertising interval (in units of 0.625 ms. This value corresponds to 25 ms.). */
@@ -92,27 +90,22 @@
 //bond conifg
 #define MAX_BOND_PEER                       5
 #define BOND_STORE_ENABLE                   1
+#define BOND_DATA_BASE_ADDR                 0x01020000
 
 /* profiles config  */
-#define CFG_APP_DIS 1
-#define CFG_PRF_DISS 1
-#define CFG_APP_BATT 1
-#define CFG_PRF_BASS 1
-//#define CFG_PRF_RDTSS 1
+#define CFG_APP_DIS             1
+#define CFG_PRF_DISS            1
+#define CFG_APP_BATT            1
+#define CFG_PRF_BASS            1
 // NOTE: must be enable to enable related func in the stack.
-#define CFG_PRF_RDTSS_16BIT 1
-
-#ifdef BLE_OTA_ENABLE
-	#define CFG_APP_NS_IUS     1
-#endif
+#define CFG_PRF_RDTSS_16BIT     1
 
 /* User config  */
-#define MCU_LSC_SEL_LSE 1
 
 #define NS_LOG_ERROR_ENABLE      1
 #define NS_LOG_WARNING_ENABLE    1
 #define NS_LOG_INFO_ENABLE       1
-#define NS_LOG_DEBUG_ENABLE      0
+#define NS_LOG_DEBUG_ENABLE      1
 
 #define NS_LOG_ENABLED 1
 // #define EVT_LOG_ENABLED 1
@@ -121,7 +114,7 @@
 
 #define NS_TIMER_ENABLE          1
 
-#define FIRMWARE_VERSION         "0.0.1"
+#define FIRMWARE_VERSION         "1.1.0"
 #define HARDWARE_VERSION         "1.0.0"
 
 

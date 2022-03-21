@@ -28,7 +28,7 @@
 /**
  * @file app_batt.c
  * @author Nations Firmware Team
- * @version v1.0.0
+ * @version v1.0.1
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
@@ -46,11 +46,11 @@
 #if (BLE_APP_BATT)
 
 #include "app_batt.h"                // Battery Application Module Definitions
-#include "app.h"                     // Application Definitions
-#include "app_task.h"                // application task definitions
+#include "ns_ble.h"                     // Application Definitions
+#include "ns_ble_task.h"                // application task definitions
 #include "bass_task.h"               // health thermometer functions
 #include "co_bt.h"
-#include "co_utils.h"
+#include "bass.h"
 #include "prf_types.h"               // Profile common types definition
 #include "arch.h"                    // Platform Definitions
 #include "prf.h"
@@ -78,6 +78,19 @@ void app_batt_init(void)
 
 	// Initial battery level: 100
 	app_batt_env.batt_lvl = 100;
+
+	//register application subtask to app task
+	struct prf_task_t prf;
+	prf.prf_task_id = TASK_ID_BASS;
+	prf.prf_task_handler = &app_batt_handlers;
+	ns_ble_prf_task_register(&prf);
+
+	//register get itf function to prf.c
+	struct prf_get_func_t get_func;
+	get_func.task_id = TASK_ID_BASS;
+	get_func.prf_itf_get_func = bass_prf_itf_get;
+	prf_get_itf_func_register(&get_func);
+
 }
 
 /**
@@ -111,6 +124,8 @@ void app_batt_add_bas(void)
 
 	// Send the message
 	ke_msg_send(req);
+
+	app_batt_init();
 }
 
 /**

@@ -1,0 +1,13 @@
+
+.vscode
+
+# for firmware
+bin
+Listings
+Objects
+EventRecorderStub.scvd
+JLinkLog*
+JLinkSettings*
+*.uvguix*
+*.uvoptx
+settings.json

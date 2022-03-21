@@ -21,47 +21,53 @@
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
  * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAYS OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * ****************************************************************************/
 
 /**
- * @file app_sec_handlers.h
+ * @file ns_ble.h
  * @author Nations Firmware Team
- * @version v1.0.0
+ * @version v1.0.1
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
-
-/** @addtogroup
- * @{
- */
-#ifndef __APP_SEC_HANDLERS_H__
-#define __APP_SEC_HANDLERS_H__
+#ifndef __APP_BLE_H__
+#define __APP_BLE_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
-#include "gapc_task.h"
-/* Public typedef -----------------------------------------------------------*/
-/* Public define ------------------------------------------------------------*/
-/* Public constants ---------------------------------------------------------*/
-/* Public function prototypes -----------------------------------------------*/
+#include "ns_ble.h"
+#include "ns_ble_task.h"
 
-void default_app_sec_init(void);
-void default_app_pairing_request(struct gapc_bond_cfm* cfm);
-void default_app_tk_exch_nomitm(struct gapc_bond_cfm* cfm);
-void default_app_ltk_exch(struct gapc_bond_cfm* cfm);
-void default_app_pairing_succeded(struct gapc_bond_ind const* bond_ind_data);
-void default_app_encrypt_req_ind(struct gapc_encrypt_cfm* cfm,
-                                 struct gapc_encrypt_req_ind const* param);
+/// User Task messages
+enum user_msg_id {
+	APP_USER_DEMO_EVE = APP_FREE_EVE_FOR_USER,
+	APP_CUSTS_TEST_EVT,
+
+};
+
+/* ble application initialization */
+void app_ble_init(void);
+void app_ble_gap_params_init(void);
+void app_ble_adv_init(void);
+
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __APP_SEC_HANDLERS_H__ */
+#endif /* __APP_BLE_H__ */
+/**
+ * @}
+ */
+
+/**
+ * @}
+ */
+
 /**
  * @}
  */

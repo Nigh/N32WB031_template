@@ -9,9 +9,8 @@
 #define CRITICAL_REGION_ENTER GLOBAL_INT_DISABLE
 #define CRITICAL_REGION_EXIT GLOBAL_INT_RESTORE
 
-typedef struct
-{
-    app_sched_event_handler_t handler;
+typedef struct {
+	app_sched_event_handler_t handler;
 	uevt_t event_data;
 } event_t;
 
@@ -21,27 +20,27 @@ __ALIGN(4) event_t m_sched_queue[SCHED_QUEUE_LENGTH];
 
 static __INLINE uint8_t next_index(uint8_t index)
 {
-    return (index < SCHED_QUEUE_LENGTH) ? (index + 1) : 0;
+	return (index < SCHED_QUEUE_LENGTH) ? (index + 1) : 0;
 }
 
 static __INLINE uint8_t app_sched_queue_full()
 {
-  uint8_t tmp = m_queue_start_index;
-  return next_index(m_queue_end_index) == tmp;
+	uint8_t tmp = m_queue_start_index;
+	return next_index(m_queue_end_index) == tmp;
 }
 #define APP_SCHED_QUEUE_FULL() app_sched_queue_full()
 
 static __INLINE uint8_t app_sched_queue_empty()
 {
-  uint8_t tmp = m_queue_start_index;
-  return m_queue_end_index == tmp;
+	uint8_t tmp = m_queue_start_index;
+	return m_queue_end_index == tmp;
 }
 #define APP_SCHED_QUEUE_EMPTY() app_sched_queue_empty()
 
 void app_sched_init(void)
 {
 	m_queue_end_index = 0;
-    m_queue_start_index = 0;
+	m_queue_start_index = 0;
 }
 
 uint32_t app_sched_event_put(uevt_t const* p_event_data, app_sched_event_handler_t handler)
@@ -66,27 +65,26 @@ uint32_t app_sched_event_put(uevt_t const* p_event_data, app_sched_event_handler
 		err_code = 0xFFFFFFFF;
 	}
 
-    return err_code;
+	return err_code;
 }
 
 void app_sched_execute(void)
 {
-    while (!APP_SCHED_QUEUE_EMPTY())
-    {
-        // Since this function is only called from the main loop, there is no
-        // need for a critical region here, however a special care must be taken
-        // regarding update of the queue start index (see the end of the loop).
-        uint16_t event_index = m_queue_start_index;
+	while (!APP_SCHED_QUEUE_EMPTY()) {
+		// Since this function is only called from the main loop, there is no
+		// need for a critical region here, however a special care must be taken
+		// regarding update of the queue start index (see the end of the loop).
+		uint16_t event_index = m_queue_start_index;
 
-        uevt_t * p_event_data;
-        app_sched_event_handler_t event_handler;
+		uevt_t* p_event_data;
+		app_sched_event_handler_t event_handler;
 
-        p_event_data = &(m_sched_queue[event_index].event_data);
-        event_handler = m_sched_queue[event_index].handler;
-        event_handler(p_event_data);
-        // Event processed, now it is safe to move the queue start index,
-        // so the queue entry occupied by this event can be used to store
-        // a next one.
-        m_queue_start_index = next_index(m_queue_start_index);
-    }
+		p_event_data = &(m_sched_queue[event_index].event_data);
+		event_handler = m_sched_queue[event_index].handler;
+		event_handler(p_event_data);
+		// Event processed, now it is safe to move the queue start index,
+		// so the queue entry occupied by this event can be used to store
+		// a next one.
+		m_queue_start_index = next_index(m_queue_start_index);
+	}
 }

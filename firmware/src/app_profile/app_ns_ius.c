@@ -28,7 +28,7 @@
 /**
  * @file app_ns_ius.c
  * @author Nations Firmware Team
- * @version v1.0.0
+ * @version v1.0.1
  *
  * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
@@ -57,7 +57,7 @@
 #include "ke_mem.h"
 #include "co_utils.h"
 #include "ke_msg.h"
-#include "app.h"
+#include "ns_ble.h"
 #include "ns_log.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -104,7 +104,7 @@ static int ns_ius_val_write_ind_handler(ke_msg_id_t const msgid, void const* par
 				} else if(cfg_value == PRF_CLI_STOP_NTFIND) {
 					notification_enable = false;
 				}
-				NS_LOG_DEBUG("notification_enable %d\r\n"notification_enable);
+				NS_LOG_DEBUG("notification_enable %d\r\n", notification_enable);
 			}
 
 		}
@@ -196,13 +196,22 @@ void app_ns_ius_add_ns_ius(void)
 	db_cfg->features = 0;
 	ke_msg_send(req);
 
-
+	app_ns_ius_init();
 }
 
 void app_ns_ius_init(void)
 {
+	//register application subtask to app task
+	struct prf_task_t prf;
+	prf.prf_task_id = TASK_ID_NS_IUS;
+	prf.prf_task_handler = &ns_ius_app_handlers;
+	ns_ble_prf_task_register(&prf);
 
-
+	//register get itf function to prf.c
+	struct prf_get_func_t get_func;
+	get_func.task_id = TASK_ID_NS_IUS;
+	get_func.prf_itf_get_func = ns_ius_prf_itf_get;
+	prf_get_itf_func_register(&get_func);
 }
 
 

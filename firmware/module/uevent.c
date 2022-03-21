@@ -9,9 +9,9 @@ __WEAK void user_event_dispatcher(uevt_t evt)
 
 __WEAK void user_event_handler(uevt_t* evt)
 {
-	#if NS_LOG_ENABLED==1 && EVT_LOG_ENABLED==1
+#if NS_LOG_ENABLED==1 && EVT_LOG_ENABLED==1
 	LOG_RAW("EVT Pop:%04X\r\n", evt->evt_id);
-	#endif
+#endif
 	user_event_array_dispatcher(*evt);
 }
 

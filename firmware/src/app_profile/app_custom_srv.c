@@ -1,7 +1,36 @@
+/*****************************************************************************
+ * Copyright (c) 2019, Nations Technologies Inc.
+ *
+ * All rights reserved.
+ * ****************************************************************************
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the disclaimer below.
+ *
+ * Nations' name may not be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * DISCLAIMER: THIS SOFTWARE IS PROVIDED BY NATIONS "AS IS" AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * DISCLAIMED. IN NO EVENT SHALL NATIONS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+ * OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * ****************************************************************************/
+
 /**
  * @file app_custom_srv.c
- * @author
- * @version v1.0.0
+ * @author Nations Firmware Team
+ * @version v1.0.1
+ *
+ * @copyright Copyright (c) 2019, Nations Technologies Inc. All rights reserved.
  */
 
 /**
@@ -10,21 +39,27 @@
  */
 
 #include "rwip_config.h"     // SW configuration
+#include "stdio.h"
 
 /* Includes ------------------------------------------------------------------*/
-#include "co_utils.h"
-#include "app_custom_srv.h"                    // rdtss 16bit uuid Application Module Definitions
-#include "custom_srv_task.h"                   // Device Information Profile Functions
-#include "gapm_task.h"                   // GAP Manager Task API
-#include "app.h"
+#include "rdtss_16bit.h"
+#include "app_custom_srv.h"
+#include "rdtss_16bit_task.h"
+#include "gapm_task.h"
+#include "ns_ble.h"
 #include "prf.h"
 #include "ke_timer.h"
 
-#include "stdio.h"
-#include "app_task.h"
 
 
-struct attm_desc custom_srv_att_db[CUSTOM_SRV_IDX_NB] = {
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
+const uint16_t app_rdts_svc_uuid = ATT_SERVICE_AM_SPEED_16;
+
+const struct attm_desc app_rdts_att_db[RDTSS_16BIT_IDX_NB] = {
 	/* Service Declaration */
 	[0] = {ATT_DECL_PRIMARY_SERVICE, PERM(RD, ENABLE),                                              0,                                          0       },
 
@@ -46,41 +81,39 @@ struct attm_desc custom_srv_att_db[CUSTOM_SRV_IDX_NB] = {
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-void app_custom_srv_init(void)
-{
-	// Nothing to do
-}
+
 
 /**
  * @brief Create raw data transfer server profile database.
  * @return void
  */
-void app_custom_srv_add_profile(void)
+void app_custom_srv_add_rdtss_16bit(void)
 {
-	struct custom_srv_db_cfg* db_cfg;
+	struct rdtss_16bit_db_cfg* db_cfg;
 
 	struct gapm_profile_task_add_cmd* req = KE_MSG_ALLOC_DYN(GAPM_PROFILE_TASK_ADD_CMD,
 	                                        TASK_GAPM,
 	                                        TASK_APP,
 	                                        gapm_profile_task_add_cmd,
-	                                        sizeof(struct custom_srv_db_cfg));
-
+	                                        sizeof(struct rdtss_16bit_db_cfg));
+	NS_LOG_DEBUG("Func:[%s]\r\n", __func__);
 	// Fill message
 	req->operation = GAPM_PROFILE_TASK_ADD;
 	req->sec_lvl = PERM(SVC_AUTH, NO_AUTH);
-	req->prf_task_id = TASK_ID_CUSTOM_SRV;
+	req->prf_task_id = TASK_ID_RDTSS_16BIT;
 	req->app_task = TASK_APP;
 	req->start_hdl = 0;
 
 	// Set parameters
-	db_cfg = (struct custom_srv_db_cfg*) req->param;
+	db_cfg = (struct rdtss_16bit_db_cfg*) req->param;
 	// Attribute table. In case the handle offset needs to be saved
-	db_cfg->att_tbl = NULL;
-	db_cfg->cfg_flag = 0;
-	db_cfg->features = 0;
-
+	db_cfg->att_tbl     = &app_rdts_att_db[0];
+	db_cfg->svc_uuid    = &app_rdts_svc_uuid;
+	db_cfg->max_nb_att  = RDTSS_16BIT_IDX_NB;
 	// Send the message
 	ke_msg_send(req);
+
+	app_custom_srv_init();
 }
 
 /**
@@ -89,8 +122,8 @@ void app_custom_srv_add_profile(void)
  * @return
  * @note   Note
  */
-static int custom_srv_value_req_ind_handler(ke_msg_id_t const msgid,
-        struct custom_srv_value_req_ind const* req_value,
+static int rdtss_16bit_value_req_ind_handler(ke_msg_id_t const msgid,
+        struct rdtss_16bit_value_req_ind const* req_value,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
@@ -101,14 +134,14 @@ static int custom_srv_value_req_ind_handler(ke_msg_id_t const msgid,
 	// Pointer to the data
 	uint8_t* data = NULL;
 
-	len = APP_CUSTOMS_16BIT_MANUFACTURER_NAME_LEN;
-	data = (uint8_t*)APP_CUSTOMS_16BIT_MANUFACTURER_NAME;
+	len = APP_RDTSS_16BIT_MANUFACTURER_NAME_LEN;
+	data = (uint8_t*)APP_RDTSS_16BIT_MANUFACTURER_NAME;
 
 
 	// Allocate confirmation to send the value
-	struct custom_srv_value_req_rsp* rsp_value = KE_MSG_ALLOC_DYN(CUSTOMS_16BIT_VALUE_REQ_RSP,
+	struct rdtss_16bit_value_req_rsp* rsp_value = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VALUE_REQ_RSP,
 	        src_id, dest_id,
-	        custom_srv_value_req_rsp,
+	        rdtss_16bit_value_req_rsp,
 	        len);
 
 	rsp_value->length = len;
@@ -129,12 +162,12 @@ static int custom_srv_value_req_ind_handler(ke_msg_id_t const msgid,
  * @return
  * @note
  */
-static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
-        struct custom_srv_val_write_ind const* ind_value,
+static int rdtss_16bit_val_write_ind_handler(ke_msg_id_t const msgid,
+        struct rdtss_16bit_val_write_ind const* ind_value,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n\twrite handle = %x\r\n\tlength = %x\r\n\t", __func__, ind_value->handle, ind_value->length);
+	NS_LOG_DEBUG("Func:[%s],write handle = %x,length = %x\r\n", __func__, ind_value->handle, ind_value->length);
 
 	for(uint16_t i = 0; i < ind_value->length; i++) {
 		NS_LOG_DEBUG("%x ", ind_value->value[i]);
@@ -145,9 +178,9 @@ static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
 	uint16_t length = ind_value->length;
 
 	switch (handle) {
-		case CUSTOM_SRV_IDX_NTF_CFG:
+		case RDTSS_16BIT_IDX_NTF_CFG:
 
-			NS_LOG_DEBUG("CUSTOM_SRV_IDX_NTF_CFG\r\n");
+			NS_LOG_DEBUG("RDTSS_16BIT_IDX_NTF_CFG\r\n");
 
 			if(length == 2) {
 				uint16_t cfg_value = ind_value->value[0] + ind_value->value[1];
@@ -159,14 +192,13 @@ static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
 			}
 
 			break;
-		case CUSTOM_SRV_IDX_WRITE_VAL:
-			NS_LOG_DEBUG("CUSTOM_SRV_IDX_WRITE_VAL\r\n");
+		case RDTSS_16BIT_IDX_WRITE_VAL:
+			NS_LOG_DEBUG("RDTSS_16BIT_IDX_WRITE_VAL\r\n");
 			// TODO: Receive
 			static s_raw_data raw;
 			raw.data = ind_value->value;
 			raw.length = ind_value->length;
 			uevt_bc(UEVT_BLE_AIR_RAW_RECV, &raw);
-			// app_usart_tx_fifo_enter(ind_value->value, ind_value->length);
 			break;
 		default:
 			break;
@@ -182,33 +214,33 @@ static int custom_srv_val_write_ind_handler(ke_msg_id_t const msgid,
  * @return
  * @note   Note
  */
-static int custom_srv_val_ntf_cfm_handler(ke_msg_id_t const msgid,
-        struct custom_srv_val_ntf_cfm const* cfm_value,
+static int rdtss_16bit_val_ntf_cfm_handler(ke_msg_id_t const msgid,
+        struct rdtss_16bit_val_ntf_cfm const* cfm_value,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
 {
-	NS_LOG_DEBUG("Func:[%s]\r\n\tntf cfm handle = %x\r\n\tstatus = %x\r\n", __func__, cfm_value->handle, cfm_value->status);
-	// usart_forward_to_ble_loop();
+	NS_LOG_DEBUG("Func:[%s],ntf cfm handle = %x, status = %x\r\n", __func__, cfm_value->handle, cfm_value->status);
+
 	return (KE_MSG_CONSUMED);
 }
 
 /**
- * @brief  custom_srv send notify
+ * @brief  rdtss_16bit send notify
  * @param
  * @return
  * @note
  */
 void custom_srv_send_notify(const uint8_t* data, uint16_t length)
 {
-	struct custom_srv_val_ntf_ind_req* req = KE_MSG_ALLOC_DYN(CUSTOMS_16BIT_VAL_NTF_REQ,
-	        prf_get_task_from_id(TASK_ID_CUSTOM_SRV),
+	struct rdtss_16bit_val_ntf_ind_req* req = KE_MSG_ALLOC_DYN(RDTSS_16BIT_VAL_NTF_REQ,
+	        prf_get_task_from_id(TASK_ID_RDTSS_16BIT),
 	        TASK_APP,
-	        custom_srv_val_ntf_ind_req,
+	        rdtss_16bit_val_ntf_ind_req,
 	        length);
 
 	req->conidx = app_env.conidx;
 	req->notification = true;
-	req->handle = CUSTOM_SRV_IDX_NTF_VAL;
+	req->handle = RDTSS_16BIT_IDX_NTF_VAL;
 	req->length = length;
 	memcpy(&req->value[0], data, length);
 
@@ -218,13 +250,29 @@ void custom_srv_send_notify(const uint8_t* data, uint16_t length)
 
 /// Default State handlers definition
 const struct ke_msg_handler app_custom_srv_msg_handler_list[] = {
-	{CUSTOMS_16BIT_VALUE_REQ_IND,                    (ke_msg_func_t)custom_srv_value_req_ind_handler},
-	{CUSTOMS_16BIT_VAL_WRITE_IND,                    (ke_msg_func_t)custom_srv_val_write_ind_handler},
-	{CUSTOMS_16BIT_VAL_NTF_CFM,                      (ke_msg_func_t)custom_srv_val_ntf_cfm_handler},
+	{RDTSS_16BIT_VALUE_REQ_IND,                    (ke_msg_func_t)rdtss_16bit_value_req_ind_handler},
+	{RDTSS_16BIT_VAL_WRITE_IND,                    (ke_msg_func_t)rdtss_16bit_val_write_ind_handler},
+	{RDTSS_16BIT_VAL_NTF_CFM,                      (ke_msg_func_t)rdtss_16bit_val_ntf_cfm_handler},
 
 };
 
 const struct app_subtask_handlers app_custom_srv_handlers = APP_HANDLERS(app_custom_srv);
+
+void app_custom_srv_init(void)
+{
+	//register application subtask to app task
+	struct prf_task_t prf;
+	prf.prf_task_id = TASK_ID_RDTSS_16BIT;
+	prf.prf_task_handler = &app_custom_srv_handlers;
+	ns_ble_prf_task_register(&prf);
+
+	//register get itf function to prf.c
+	struct prf_get_func_t get_func;
+	get_func.task_id = TASK_ID_RDTSS_16BIT;
+	get_func.prf_itf_get_func = rdtss_16bit_prf_itf_get;
+	prf_get_itf_func_register(&get_func);
+
+}
 
 void ble_air_on_uevt_handler(uevt_t* evt)
 {
@@ -243,3 +291,4 @@ void ble_air_init(void)
 {
 	user_event_handler_regist(ble_air_on_uevt_handler);
 }
+

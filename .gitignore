@@ -1,17 +1,2 @@
-# for firmware
-bin
-Listings
-Objects
-EventRecorderStub.scvd
-JLinkLog*
-JLinkSettings*
-*.uvguix*
-*.uvoptx
-settings.json
 
-# for web ble
-node_modules
-.DS_Store
-dist
-dist-ssr
-*.local
+.vscode

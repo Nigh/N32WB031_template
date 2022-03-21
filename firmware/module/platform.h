@@ -30,6 +30,7 @@ void LOG_HEX_RAW_IMP(uint8_t* array, uint16_t length);
 
 void btn_to_start_up(void);
 void button_init(void);
+void rtc_init(void);
 void led_init(void);
 void platform_init(void);
 void platform_scheduler(void);
