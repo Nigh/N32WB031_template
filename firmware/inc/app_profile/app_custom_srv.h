@@ -54,8 +54,8 @@
 
 
 /// Manufacturer Name Value
-#define APP_RDTSS_16BIT_MANUFACTURER_NAME       ("CUST1_16")
-#define APP_RDTSS_16BIT_MANUFACTURER_NAME_LEN   (8)
+#define APP_CUSTOM_SERVICE_MANUFACTURER_NAME       ("CUST1_16")
+#define APP_CUSTOM_SERVICE_MANUFACTURER_NAME_LEN   (8)
 
 
 
@@ -63,19 +63,19 @@
 #define ATT_CHAR_AM_SPEED_WRITE_16       0xCC01           /*!< Characteristic value UUID */
 #define ATT_CHAR_AM_SPEED_NTF_16         0xCC02           /*!< Characteristic value UUID */
 
-/// rdtss 16bit uuid Service Attributes Indexes
+/// app custom uuid Service Attributes Indexes
 enum {
-	RDTSS_16BIT_IDX_SVC,
+	APP_CUSTOM_IDX_SVC,
 
-	RDTSS_16BIT_IDX_WRITE_CHAR,
-	RDTSS_16BIT_IDX_WRITE_VAL,
-	RDTSS_16BIT_IDX_WRITE_CFG,
+	APP_CUSTOM_IDX_WRITE_CHAR,
+	APP_CUSTOM_IDX_WRITE_VAL,
+	APP_CUSTOM_IDX_WRITE_CFG,
 
-	RDTSS_16BIT_IDX_NTF_CHAR,
-	RDTSS_16BIT_IDX_NTF_VAL,
-	RDTSS_16BIT_IDX_NTF_CFG,
+	APP_CUSTOM_IDX_NTF_CHAR,
+	APP_CUSTOM_IDX_NTF_VAL,
+	APP_CUSTOM_IDX_NTF_CFG,
 
-	RDTSS_16BIT_IDX_NB,
+	APP_CUSTOM_IDX_NB,
 };
 
 /**
@@ -86,7 +86,7 @@ void app_custom_srv_init(void);
 /**
  * @brief Add a Device Information Service instance in the DB
  **/
-void app_custom_srv_add_rdtss_16bit(void);
+void app_custom_srv_add(void);
 
 void custom_srv_send_notify(const uint8_t* data, uint16_t length);
 

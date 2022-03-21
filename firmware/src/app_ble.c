@@ -263,7 +263,7 @@ void app_ble_prf_init(void)
 #endif //BLE_APP_NS_IUS 
 
 	//add raw data transmit server(rdts)
-	ns_ble_add_prf_func_register(app_custom_srv_add_rdtss_16bit);
+	ns_ble_add_prf_func_register(app_custom_srv_add);
 
 
 

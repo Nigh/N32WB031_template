@@ -59,7 +59,7 @@
 
 const uint16_t app_rdts_svc_uuid = ATT_SERVICE_AM_SPEED_16;
 
-const struct attm_desc app_rdts_att_db[RDTSS_16BIT_IDX_NB] = {
+const struct attm_desc app_rdts_att_db[APP_CUSTOM_IDX_NB] = {
 	/* Service Declaration */
 	[0] = {ATT_DECL_PRIMARY_SERVICE, PERM(RD, ENABLE),                                              0,                                          0       },
 
@@ -87,7 +87,7 @@ const struct attm_desc app_rdts_att_db[RDTSS_16BIT_IDX_NB] = {
  * @brief Create raw data transfer server profile database.
  * @return void
  */
-void app_custom_srv_add_rdtss_16bit(void)
+void app_custom_srv_add(void)
 {
 	struct rdtss_16bit_db_cfg* db_cfg;
 
@@ -109,7 +109,7 @@ void app_custom_srv_add_rdtss_16bit(void)
 	// Attribute table. In case the handle offset needs to be saved
 	db_cfg->att_tbl     = &app_rdts_att_db[0];
 	db_cfg->svc_uuid    = &app_rdts_svc_uuid;
-	db_cfg->max_nb_att  = RDTSS_16BIT_IDX_NB;
+	db_cfg->max_nb_att  = APP_CUSTOM_IDX_NB;
 	// Send the message
 	ke_msg_send(req);
 
@@ -122,7 +122,7 @@ void app_custom_srv_add_rdtss_16bit(void)
  * @return
  * @note   Note
  */
-static int rdtss_16bit_value_req_ind_handler(ke_msg_id_t const msgid,
+static int app_custom_value_req_ind_handler(ke_msg_id_t const msgid,
         struct rdtss_16bit_value_req_ind const* req_value,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
@@ -134,8 +134,8 @@ static int rdtss_16bit_value_req_ind_handler(ke_msg_id_t const msgid,
 	// Pointer to the data
 	uint8_t* data = NULL;
 
-	len = APP_RDTSS_16BIT_MANUFACTURER_NAME_LEN;
-	data = (uint8_t*)APP_RDTSS_16BIT_MANUFACTURER_NAME;
+	len = APP_CUSTOM_SERVICE_MANUFACTURER_NAME_LEN;
+	data = (uint8_t*)APP_CUSTOM_SERVICE_MANUFACTURER_NAME;
 
 
 	// Allocate confirmation to send the value
@@ -162,7 +162,7 @@ static int rdtss_16bit_value_req_ind_handler(ke_msg_id_t const msgid,
  * @return
  * @note
  */
-static int rdtss_16bit_val_write_ind_handler(ke_msg_id_t const msgid,
+static int app_custom_val_write_ind_handler(ke_msg_id_t const msgid,
         struct rdtss_16bit_val_write_ind const* ind_value,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
@@ -178,9 +178,9 @@ static int rdtss_16bit_val_write_ind_handler(ke_msg_id_t const msgid,
 	uint16_t length = ind_value->length;
 
 	switch (handle) {
-		case RDTSS_16BIT_IDX_NTF_CFG:
+		case APP_CUSTOM_IDX_NTF_CFG:
 
-			NS_LOG_DEBUG("RDTSS_16BIT_IDX_NTF_CFG\r\n");
+			NS_LOG_DEBUG("APP_CUSTOM_IDX_NTF_CFG\r\n");
 
 			if(length == 2) {
 				uint16_t cfg_value = ind_value->value[0] + ind_value->value[1];
@@ -192,8 +192,8 @@ static int rdtss_16bit_val_write_ind_handler(ke_msg_id_t const msgid,
 			}
 
 			break;
-		case RDTSS_16BIT_IDX_WRITE_VAL:
-			NS_LOG_DEBUG("RDTSS_16BIT_IDX_WRITE_VAL\r\n");
+		case APP_CUSTOM_IDX_WRITE_VAL:
+			NS_LOG_DEBUG("APP_CUSTOM_IDX_WRITE_VAL\r\n");
 			// TODO: Receive
 			static s_raw_data raw;
 			raw.data = ind_value->value;
@@ -214,7 +214,7 @@ static int rdtss_16bit_val_write_ind_handler(ke_msg_id_t const msgid,
  * @return
  * @note   Note
  */
-static int rdtss_16bit_val_ntf_cfm_handler(ke_msg_id_t const msgid,
+static int app_custom_val_ntf_cfm_handler(ke_msg_id_t const msgid,
         struct rdtss_16bit_val_ntf_cfm const* cfm_value,
         ke_task_id_t const dest_id,
         ke_task_id_t const src_id)
@@ -240,19 +240,18 @@ void custom_srv_send_notify(const uint8_t* data, uint16_t length)
 
 	req->conidx = app_env.conidx;
 	req->notification = true;
-	req->handle = RDTSS_16BIT_IDX_NTF_VAL;
+	req->handle = APP_CUSTOM_IDX_NTF_VAL;
 	req->length = length;
 	memcpy(&req->value[0], data, length);
 
 	ke_msg_send(req);
 }
 
-
 /// Default State handlers definition
 const struct ke_msg_handler app_custom_srv_msg_handler_list[] = {
-	{RDTSS_16BIT_VALUE_REQ_IND,                    (ke_msg_func_t)rdtss_16bit_value_req_ind_handler},
-	{RDTSS_16BIT_VAL_WRITE_IND,                    (ke_msg_func_t)rdtss_16bit_val_write_ind_handler},
-	{RDTSS_16BIT_VAL_NTF_CFM,                      (ke_msg_func_t)rdtss_16bit_val_ntf_cfm_handler},
+	{RDTSS_16BIT_VALUE_REQ_IND,                    (ke_msg_func_t)app_custom_value_req_ind_handler},
+	{RDTSS_16BIT_VAL_WRITE_IND,                    (ke_msg_func_t)app_custom_val_write_ind_handler},
+	{RDTSS_16BIT_VAL_NTF_CFM,                      (ke_msg_func_t)app_custom_val_ntf_cfm_handler},
 
 };
 
