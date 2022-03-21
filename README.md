@@ -1,26 +1,32 @@
-# N32WB031 模板工程
+# N32WB031 测试与模板工程
 
-**本项目包含[Firmware](#Firmware)与[Web-BLE](#Web-BLE)前端两个项目。**
-
-
+商务合作联系邮箱（深圳）：xianyi.xia@outlook.com
 
 
+
+**本项目包含[Firmware](#Firmware)固件与[Web-BLE](#Web-BLE)前端两个项目。**
 
 ## Firmware
 
 本项目基于`N32WB031_STB_V1.1`开发板，开发板相关资料见[assets](./assets)文件夹。
 
+本项目当前适用于`v1.1.0`版本SDK.
+
 ![](./assets/board.webp)
 
 固件项目目前只支持`Keil`开发环境。
 
-> 在v1.0版本的SDK中，存在一个bug，可能会导致io配置被意外更改。
->
-> 修复方法为更改sdk中log usart的deinit函数。其41行的结构体需要先进行初始化。
->
-> 在之后版本的sdk中会修复。
+**注意！！！<br>由于`Keil`不支持路径宏，故为了将项目与SDK去耦合，所有的引用路径都替换成了模板变量，当在其他环境使用时，需要使用编辑器打开`template.uvprojx`工程文件，并将其中的`$(SDK_PATH)`替换为实际的SDK路径即可。**
 
-**注意！！！<br>由于`Keil`不支持路径宏，故为了将项目与SDK去耦合，所有的`include`路径都替换成了绝对路径，当在其他环境使用时，需要将`template.uvprojx`工程文件中的所有的对应路径替换为SDK的实际路径。**
+> 例：
+>
+> 如果你的SDK路径是 `H:\_n32wb_SDK\v110`，则需要将`$(SDK_PATH)`替换为`H:\_n32wb_SDK\v110`即可。
+>
+> 分辨SDK路径可以看路径下是否有`doc`、`firmware`、`middlewares`、`projects`和`utilities`这5个目录。
+>
+> 即在上述路径中，存在 `H:\_n32wb_SDK\v110\firmware`这个目录。
+
+
 
 ### 服务
 
@@ -30,7 +36,7 @@
 - BAS(`0x180F`)
 - 自定义透传 (`0xCC00`)
   - Notify(`0xCC02`)
-  - WoR(`0xCC01`)
+  - WriteWithoutResponce(`0xCC01`)
 
 ### IO
 
@@ -42,11 +48,19 @@
 
 ### Usage
 
-由于此IC在`Sleep`状态无法访问`SWD`，所以上电后两灯交替闪烁，处于激活状态，方便烧录，按下`BUTTON1`或`BUTTON2`后才开始运行程序。
+按照上面描述中替换SDK路径后。即可使用`Keil`打开工程进行编译和烧录。
+
+烧录完成后，重启EV板，即可观察到`LED1`与`LED2`交替闪烁。此时不会进入`sleep`状态，保持`SWD`接口可用，方便烧录。
+
+在此时按下`Button1`或`Button2`后，测试固件将会开始运行。
 
 开始运行程序后，使用[Web-BLE](#Web-BLE)应用可以与开发板连接。在应用中可以控制LED的闪烁与开关。并且应用也会将`Button1`和`Button2`的状态实时地反映在界面上。
 
+### Known issues
 
+本项目使用的`v1.1.0`版本的SDK在编译时，会有两个SDK文件报出共5个Warning，其中`n32wb03x_qflash.c`文件3个，分别在`181`，`199`和`219`行，原因均为定义而未使用的变量。`rtdss_16bit_task.c`文件2个，分别在`345`与`390`行，原因同上。
+
+以上编译警告不影响功能，暂时忽略即可。期待后续的SDK更新能够修复上述问题。
 
 
 
@@ -54,9 +68,11 @@
 
 ![](./assets/web-ble.jpg)
 
-注意，此应用仅兼容部分浏览器与环境，兼容性列表参见 https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API#browser_compatibility
+注意！！！此应用仅兼容部分浏览器与环境，兼容性列表参见 https://developer.mozilla.org/en-US/docs/Web/API/Web_Bluetooth_API#browser_compatibility
 
 建议在`Windows`、`Linux`和`Android`平台上使用最新版本的`Chrome`以获取良好体验。
+
+无法自行构建Web应用的用户可以使用上述的平台与浏览器点击访问本人搭建的 [在线应用](https://app.tecnico.cc/n32wb_evb/) 直接使用。
 
 ### Env
 
@@ -93,4 +109,10 @@ UI库使用了[mui](https://mui.com/)，并由[Vite](https://vitejs.dev/)插件[
 点击`Scan`按钮配对设备后，将会出现设备框架，点击`Connect`即可连接。
 
 正常连接后，将可以使用设备框架中的按钮来控制开发板上的LED，并且开发板上`Button1`和`Button2`两个按钮的状态也将实时反映在应用的界面上。
+
+点击`LED2 ON`与`LED2 OFF`按钮可以控制对应LED的亮灭。
+
+点击`LED1 BLINK`按钮可以使对应LED开始闪烁，直到点击`LED OFF`按钮。
+
+按下与松开`开发板`上的`Button1`与`Button2`，应用界面上的按钮会实时反映它们的状态。
 
