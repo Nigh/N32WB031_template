@@ -1,6 +1,9 @@
 
 .vscode
 
+# for keilhelper.exe
+config.ini
+
 # for firmware
 bin
 Listings

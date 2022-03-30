@@ -16,17 +16,19 @@
 
 固件项目目前只支持`Keil`开发环境。
 
-**注意！！！<br>由于`Keil`不支持路径宏，故为了将项目与SDK去耦合，所有的引用路径都替换成了模板变量，当在其他环境使用时，需要使用编辑器打开`template.uvprojx`工程文件，并将其中的`$(SDK_PATH)`替换为实际的SDK路径即可。**
+### 编译方法
 
-> 例：
->
-> 如果你的SDK路径是 `H:\_n32wb_SDK\v110`，则需要将`$(SDK_PATH)`替换为`H:\_n32wb_SDK\v110`即可。
->
-> 分辨SDK路径可以看路径下是否有`doc`、`firmware`、`middlewares`、`projects`和`utilities`这5个目录。
->
-> 即在上述路径中，存在 `H:\_n32wb_SDK\v110\firmware`这个目录。
+为了使得`Keil`项目能够支持宏路径，本项目引入了 [KeilHelper](https://github.com/Nigh/Keil_MacroPath_Helper) 工具。
 
+![](./assets/sdk_select.png)
 
+打开`Keil`项目，第一次点击编译，会弹出窗口选择SDK路径。
+
+![](./assets/reload_project.png)
+
+选择了有效的SDK路径并确定后。Keil会提示重载项目。点击确定后，即可正常编译项目。
+
+[KeilHelper](https://github.com/Nigh/Keil_MacroPath_Helper) 的更多用法可参阅项目页面。
 
 ### 服务
 
@@ -47,8 +49,6 @@
 - LOG: USART:115200 (`PB6/PB7`)
 
 ### Usage
-
-按照上面描述中替换SDK路径后。即可使用`Keil`打开工程进行编译和烧录。
 
 烧录完成后，重启EV板，即可观察到`LED1`与`LED2`交替闪烁。此时不会进入`sleep`状态，保持`SWD`接口可用，方便烧录。
 
